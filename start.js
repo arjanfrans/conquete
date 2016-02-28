@@ -33,7 +33,6 @@ while (!allOccupied) {
 
 debug('all territories occupied', game.board.areAllTerritoriesOccupied());
 
-game.changePhase('setupB');
 
 let startUnitsPlaced = false;
 
@@ -54,6 +53,14 @@ while (!startUnitsPlaced) {
 
 debug('all starting units placed', game.noMoreStartUnits());
 
-game.changePhase('battle');
+let availableUnits = game.playerAvailableUnits(0);
+let territories = game.playerTerritories(0);
 
-console.log(game.playerContinents(0));
+debug('territories taken', territories.map(territory => territory.id));
+debug('units available', availableUnits);
+
+game.placeUnits(0, 4, territories[0].id);
+
+debug('units available', game.playerAvailableUnits(0));
+
+game.nextTurnPhase(0);
