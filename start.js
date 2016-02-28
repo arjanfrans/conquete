@@ -55,3 +55,5 @@ while (!startUnitsPlaced) {
 debug('all starting units placed', game.noMoreStartUnits());
 
 game.changePhase('battle');
+
+console.log(game.playerContinents(0));
