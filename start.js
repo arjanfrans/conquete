@@ -59,8 +59,20 @@ let territories = game.playerTerritories(0);
 debug('territories taken', territories.map(territory => territory.id));
 debug('units available', availableUnits);
 
-game.placeUnits(0, 4, territories[0].id);
+game.placeUnits(0, game.playerAvailableUnits(0), territories[0].id);
 
 debug('units available', game.playerAvailableUnits(0));
+
+game.nextTurnPhase(0);
+
+let attack = territories[0].enemyAdjacentTerritories()[0];
+debug('attcking territory', attack.toString());
+
+game.attack(0, territories[0].id, attack.id, 3);
+
+game.roll(0, 3);
+game.roll(attack.occupyingPlayer.id, 2);
+game.roll(0, Math.min(game.battle.attackUnits, 3));
+game.roll(attack.occupyingPlayer.id, Math.min(game.battle.defendUnits, 2));
 
 game.nextTurnPhase(0);
