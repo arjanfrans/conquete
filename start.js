@@ -53,38 +53,125 @@ while (!startUnitsPlaced) {
 
 debug('all starting units placed', game.noMoreStartUnits());
 
-let availableUnits = game.playerAvailableUnits(0);
-let territories = game.playerTerritories(0);
+function nearEnemeyTerritory (territories) {
+    for (let territory of territories) {
+        if (territory.units > 1) {
+            let attackTerritories = territory.enemyAdjacentTerritories();
+            if (attackTerritories.length > 0) {
+                return territory;
+            }
+        }
+    }
 
-debug('territories taken', territories.map(territory => territory.id));
-debug('units available', availableUnits);
+    return randomValue(territories);
+}
 
-game.placeUnits(0, game.playerAvailableUnits(0), territories[0].id);
 
-debug('units available', game.playerAvailableUnits(0));
+let turn = 0;
+while (game.players.size > 1) {
+    turn++;
 
-game.nextTurnPhase(0);
+    for (let player of game.players.values()) {
+        let id = player.id;
 
-let attack = territories[0].enemyAdjacentTerritories()[0];
-debug('attcking territory', attack.toString());
+        let availableUnits = game.playerAvailableUnits(id);
+        let territories = game.playerTerritories(id);
 
-game.attack(0, territories[0].id, attack.id, 3);
+        debug('territories taken', territories.map(territory => territory.id));
+        debug('units available', availableUnits);
 
-let battleOver = false;
+        let placementTerritory = randomValue(territories);
 
-while (!battleOver) {
-    game.roll(0, Math.min(game.battle.attackUnits, 3));
-    game.roll(attack.occupyingPlayer.id, Math.min(game.battle.defendUnits, 2));
+        if (id === 0) {
+            placementTerritory = nearEnemeyTerritory(territories);
+        }
 
-    if (!game.battle) {
-        battleOver = true;
+        game.placeUnits(id, game.playerAvailableUnits(id), placementTerritory.id);
+
+        while (player.cards.size >= 5) {
+
+            let newCombo = () => {
+                let combinations = [];
+
+                getCombinations(Array.from(player.cards).slice(0, 5), 0, [], combinations);
+
+                return combinations;
+            };
+
+            for (let combo of newCombo()) {
+                let cards = combo.map(card => card.id);
+
+                if (game.isValidCardCombination(cards)) {
+                    game.redeemCards(id, cards);
+
+                    break;
+                }
+            }
+        }
+
+        if (game.playerAvailableUnits(id) > 0) {
+            debug('new units available after card redeem');
+            game.placeUnits(id, game.playerAvailableUnits(id), randomValue(territories).id);
+        }
+
+        game.nextTurnPhase(id);
+
+        let attackFrom = null;
+        let attackTo = null;
+
+        territories = game.playerTerritories(id);
+
+        for (let territory of territories) {
+            if (territory.units > 1) {
+                let attackTerritories = territory.enemyAdjacentTerritories();
+                if (attackTerritories.length > 0) {
+                    attackFrom = territory;
+                    attackTo = randomValue(attackTerritories);
+                }
+            }
+        }
+
+        // if (attackFrom === null) console.log(territories)
+
+        if (id === 0 && attackFrom) {
+            let attackUnits = attackFrom.units - 1;
+
+            debug('attcking territory', attackTo.toString());
+            game.attack(id, attackFrom.id, attackTo.id, attackUnits);
+
+            let battleOver = false;
+
+            while (!battleOver) {
+                game.roll(id, Math.min(game.battle.attackUnits, 3));
+                game.roll(attackTo.occupyingPlayer.id, Math.min(game.battle.defendUnits, 2));
+
+                if (!game.battle) {
+                    battleOver = true;
+                }
+            }
+        }
+
+        if (game.isGameOver()) {
+            break;
+        }
+
+        // TODO simulate movement
+        // let p1Territories = game.playerTerritories(0);
+        // game.moveTroops(0, p1Territories[1].id, p1Territories[1].ownAdjacentTerritories()[0].id, 1);
+
+        game.nextTurnPhase(id);
+        game.endTurn(id);
     }
 }
 
-game.nextTurnPhase(0);
+function getCombinations(array, start, initialStuff, output) {
+    if (initialStuff.length >= 3) {
+        output.push(initialStuff);
+    } else {
+        var i;
 
-let p1Territories = game.playerTerritories(0);
-
-game.moveTroops(0, p1Territories[1].id, p1Territories[1].ownAdjacentTerritories()[0].id, 1);
-
-game.endTurn(0);
+        for (i = start; i < array.length; ++i) {
+            getCombinations(array, i + 1, initialStuff.concat(array[i]), output);
+        }
+    }
+}
