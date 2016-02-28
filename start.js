@@ -133,7 +133,7 @@ while (game.players.size > 1) {
 
         // if (attackFrom === null) console.log(territories)
 
-        if (id === 0 && attackFrom) {
+        if (attackFrom) {
             let attackUnits = attackFrom.units - 1;
 
             debug('attcking territory', attackTo.toString());
