@@ -70,9 +70,21 @@ debug('attcking territory', attack.toString());
 
 game.attack(0, territories[0].id, attack.id, 3);
 
-game.roll(0, 3);
-game.roll(attack.occupyingPlayer.id, 2);
-game.roll(0, Math.min(game.battle.attackUnits, 3));
-game.roll(attack.occupyingPlayer.id, Math.min(game.battle.defendUnits, 2));
+let battleOver = false;
+
+while (!battleOver) {
+    game.roll(0, Math.min(game.battle.attackUnits, 3));
+    game.roll(attack.occupyingPlayer.id, Math.min(game.battle.defendUnits, 2));
+
+    if (!game.battle) {
+        battleOver = true;
+    }
+}
 
 game.nextTurnPhase(0);
+
+let p1Territories = game.playerTerritories(0);
+
+game.moveTroops(0, p1Territories[1].id, p1Territories[1].ownAdjacentTerritories()[0].id, 1);
+
+game.endTurn(0);
