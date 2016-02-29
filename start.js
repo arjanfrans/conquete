@@ -69,27 +69,32 @@ function nearEnemeyTerritory (territories) {
 
 let turn = 0;
 while (game.players.size > 1) {
-    turn++;
-
     for (let player of game.players.values()) {
+        console.log('pla', player.id)
         let id = player.id;
 
         let availableUnits = game.playerAvailableUnits(id);
         let territories = game.playerTerritories(id);
 
-        debug('territories taken', territories.map(territory => territory.id));
+        debug('territories taken', territories.length);
         debug('units available', availableUnits);
 
-        let placementTerritory = randomValue(territories);
+        for (let i = 0; i < Math.floor(Math.random() * territories.length); i++) {
+            let placementTerritory = nearEnemeyTerritory(territories);
+            let randomUnits = Math.round(Math.random() * availableUnits) + 1;
 
-        if (id === 0) {
-            placementTerritory = nearEnemeyTerritory(territories);
+            availableUnits -= randomUnits;
+
+            if (availableUnits > 0) {
+                game.placeUnits(id, randomUnits, placementTerritory.id);
+            }
         }
 
-        game.placeUnits(id, game.playerAvailableUnits(id), placementTerritory.id);
+        if (availableUnits > 0) {
+            game.placeUnits(id, availableUnits, nearEnemeyTerritory(territories).id);
+        }
 
         while (player.cards.size >= 5) {
-
             let newCombo = () => {
                 let combinations = [];
 
@@ -131,12 +136,9 @@ while (game.players.size > 1) {
             }
         }
 
-        // if (attackFrom === null) console.log(territories)
-
         if (attackFrom) {
             let attackUnits = attackFrom.units - 1;
 
-            debug('attcking territory', attackTo.toString());
             game.attack(id, attackFrom.id, attackTo.id, attackUnits);
 
             let battleOver = false;
