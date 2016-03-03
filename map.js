@@ -75,12 +75,6 @@ const PLAYER_COLORS = {
 };
 
 function parseMap(territoryData) {
-    let mappedTerritories = {};
-
-    territoryData.forEach(territory => {
-        mappedTerritories[territory.id] = territory;
-    });
-
     let newMap = [];
 
     for (let line of map.split('\n')) {
@@ -94,7 +88,7 @@ function parseMap(territoryData) {
                 let id = split[0];
                 let data = split[1];
                 let territoryName = TERRITORIES[id];
-                let territory = mappedTerritories[territoryName];
+                let territory = territoryData[territoryName];
                 let replacement = null;
 
                 let color = null;
@@ -103,22 +97,21 @@ function parseMap(territoryData) {
                 let fill = null;
 
                 if (data === 'id') {
-                    color = 'black';
-                    let continentColor = CONTINENT_COLORS[territory.continent.id];
-
-                    bgColor = 'bg' + continentColor.charAt(0).toUpperCase() + continentColor.slice(1);
-                    replacement = territory.id.toString().substring(0, 4);
+                    color = CONTINENT_COLORS[territory.continent.id];
+                    underline = true;
+                    replacement = territory.id.toString().substring(0, 5);
                     fill = ' '.repeat(Math.abs(param.length - replacement.length));
                 } else if (data === 'u') {
                     replacement = territory.units.toString();
                     fill = ' '.repeat(Math.abs(param.length - replacement.length));
                 } else if (data === 'p') {
-                    color = PLAYER_COLORS[territory.owner];
-                    underline = true;
+                    let playerColor = PLAYER_COLORS[territory.owner];
+
+                    color = 'black';
+                    bgColor = 'bg' + playerColor.charAt(0).toUpperCase() + playerColor.slice(1);
                     replacement = territory.owner.toString();
                     fill = ' '.repeat(Math.abs(param.length - replacement.length));
                 }
-
 
                 if (replacement) {
                     replacement = replacement.toString() + fill;
@@ -145,6 +138,7 @@ function parseMap(territoryData) {
             }
 
             for (let replacement of replacements) {
+                line = line.replace(/\s\s*$/, ''); // remove trailing whitespace
                 line = line.replace(replacement.original, replacement.new);
             }
         }

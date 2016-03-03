@@ -45,10 +45,10 @@ let ai = Ai(risk);
 function simulateSetupA() {
     while (risk.info.phase === risk.info.PHASES.SETUP_A) {
         let player = risk.currentPlayer;
-        let availableTerritories = risk.info.availableTerritories;
+        let availableTerritories = Object.keys(risk.info.availableTerritories);
         let territory = randomValue(availableTerritories);
 
-        risk.act.claimTerritory(player.id, territory.id);
+        risk.act.claimTerritory(player.id, territory);
     }
 }
 
@@ -97,10 +97,8 @@ function moveUnits (player) {
     }
 }
 
-let i = 0;
 function simulateBattle() {
     while (risk.info.phase === risk.info.PHASES.BATTLE) {
-        // console.log(i++)
         let player = risk.currentPlayer;
         let availableUnits = risk.act.availableUnits();
 
@@ -132,7 +130,6 @@ function simulateBattle() {
 
             risk.act.endTurn(player.id);
         }
-
     }
 }
 
@@ -140,7 +137,9 @@ simulateSetupA();
 simulateSetupB();
 simulateBattle();
 
-console.log(asciiMap(risk.info.territories));
+let mapOutput = asciiMap(risk.info.territories);
+
+console.log(mapOutput);
 
 function getCombinations(array, start, initialStuff, output) {
     start = start || 0;
