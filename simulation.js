@@ -3,6 +3,7 @@
 const debug = require('debug')('demo:start');
 const Risk = require('./lib/risk');
 const Ai = require('./lib/risk/ai');
+const asciiMap = require('./map');
 
 function randomValue (arr) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -67,6 +68,7 @@ function simulateAttack(player, attack) {
         let battle = risk.info.battle;
 
         risk.act.rollDice(player.id, Math.min(3, battle.attacker.units));
+
         risk.act.rollDice(battle.defender.player, Math.min(2, battle.defender.units));
     }
 }
@@ -79,7 +81,6 @@ function redeemCards (player) {
 
         for (let combination of combinations()) {
             if (risk.info.areCardsValid(combination)) {
-            console.log(combination)
                 risk.act.redeemCards(player.id, combination);
 
                 break;
@@ -131,12 +132,15 @@ function simulateBattle() {
 
             risk.act.endTurn(player.id);
         }
+
     }
 }
 
 simulateSetupA();
 simulateSetupB();
 simulateBattle();
+
+console.log(asciiMap(risk.info.territories));
 
 function getCombinations(array, start, initialStuff, output) {
     start = start || 0;
