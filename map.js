@@ -94,7 +94,7 @@ function parseMap(territoryData) {
                 let color = null;
                 let bgColor = null;
                 let underline = false;
-                let fill = null;
+                let fill = '';
 
                 if (data === 'id') {
                     color = CONTINENT_COLORS[territory.continent.id];
@@ -105,11 +105,16 @@ function parseMap(territoryData) {
                     replacement = territory.units.toString();
                     fill = ' '.repeat(Math.abs(param.length - replacement.length));
                 } else if (data === 'p') {
-                    let playerColor = PLAYER_COLORS[territory.owner];
+                    if (territory.owner === null) {
+                        replacement = '-';
+                    } else {
+                        let playerColor = PLAYER_COLORS[territory.owner];
 
-                    color = 'black';
-                    bgColor = 'bg' + playerColor.charAt(0).toUpperCase() + playerColor.slice(1);
-                    replacement = territory.owner.toString();
+                        color = 'black';
+                        bgColor = 'bg' + playerColor.charAt(0).toUpperCase() + playerColor.slice(1);
+                        replacement = territory.owner.toString();
+                    }
+
                     fill = ' '.repeat(Math.abs(param.length - replacement.length));
                 }
 
