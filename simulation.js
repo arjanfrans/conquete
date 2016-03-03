@@ -60,21 +60,77 @@ function simulateSetupB() {
     }
 }
 
+function simulateAttack(player, attack) {
+    risk.act.attack(player.id, attack.from.id, attack.to.id, attack.units);
+
+    while (risk.info.battle) {
+        let battle = risk.info.battle;
+
+        risk.act.rollDice(player.id, Math.min(3, battle.attacker.units));
+        risk.act.rollDice(battle.defender.player, Math.min(2, battle.defender.units));
+    }
+}
+
+function redeemCards (player) {
+    while (risk.currentPlayer.cards.length > 4) {
+        let combinations = () => {
+            return getCombinations(Array.from(risk.currentPlayer.cards).slice(0, 5));
+        };
+
+        for (let combination of combinations()) {
+            if (risk.info.areCardsValid(combination)) {
+            console.log(combination)
+                risk.act.redeemCards(player.id, combination);
+
+                break;
+            }
+        }
+    }
+}
+
+function moveUnits (player) {
+    let movements = ai.whichUnitsToMove(player);
+
+    for (let move of movements) {
+        risk.act.moveUnits(player.id, move.from.id, move.to.id, move.units);
+    }
+}
+
+let i = 0;
 function simulateBattle() {
     while (risk.info.phase === risk.info.PHASES.BATTLE) {
+        // console.log(i++)
         let player = risk.currentPlayer;
-        let attack = randomValue(ai.whatToAttack(player));
-
         let availableUnits = risk.act.availableUnits();
 
-        let placements = ai.whereToDeployUnits(player);
+        redeemCards(player);
+
+        let placements = ai.whereToDeployUnits(risk.currentPlayer);
 
         for (let placement of placements) {
             risk.act.deployUnits(player.id, placement.territory.id, placement.units);
         }
 
         risk.act.attackPhase(player.id);
-        break;
+
+        let keepAttacking = true;
+
+        while (keepAttacking && !risk.hasGameEnded()) {
+            let attack = ai.whatToAttack(player);
+
+            if (Math.random() > 0.5 && attack) {
+                simulateAttack(player, attack);
+            } else {
+                keepAttacking = false;
+                risk.act.fortifyPhase(player.id);
+            }
+        }
+
+        if (!risk.hasGameEnded()) {
+            moveUnits(player);
+
+            risk.act.endTurn(player.id);
+        }
     }
 }
 
@@ -82,113 +138,20 @@ simulateSetupA();
 simulateSetupB();
 simulateBattle();
 
-// let turn = 0;
-// while (game.players.size > 1) {
-//     for (let player of game.players.values()) {
-//         console.log('pla', player.id)
-//         let id = player.id;
-//
-//         let availableUnits = game.playerAvailableUnits(id);
-//         let territories = game.playerTerritories(id);
-//
-//         debug('territories taken', territories.length);
-//         debug('units available', availableUnits);
-//
-//         for (let i = 0; i < Math.floor(Math.random() * territories.length); i++) {
-//             let placementTerritory = nearEnemeyTerritory(territories);
-//             let randomUnits = Math.round(Math.random() * availableUnits) + 1;
-//
-//             availableUnits -= randomUnits;
-//
-//             if (availableUnits > 0) {
-//                 game.placeUnits(id, randomUnits, placementTerritory.id);
-//             }
-//         }
-//
-//         if (availableUnits > 0) {
-//             game.placeUnits(id, availableUnits, nearEnemeyTerritory(territories).id);
-//         }
-//
-//         while (player.cards.size >= 5) {
-//             let newCombo = () => {
-//                 let combinations = [];
-//
-//                 getCombinations(Array.from(player.cards).slice(0, 5), 0, [], combinations);
-//
-//                 return combinations;
-//             };
-//
-//             for (let combo of newCombo()) {
-//                 let cards = combo.map(card => card.id);
-//
-//                 if (game.isValidCardCombination(cards)) {
-//                     game.redeemCards(id, cards);
-//
-//                     break;
-//                 }
-//             }
-//         }
-//
-//         if (game.playerAvailableUnits(id) > 0) {
-//             debug('new units available after card redeem');
-//             game.placeUnits(id, game.playerAvailableUnits(id), randomValue(territories).id);
-//         }
-//
-//         game.nextTurnPhase(id);
-//
-//         let attackFrom = null;
-//         let attackTo = null;
-//
-//         territories = game.playerTerritories(id);
-//
-//         for (let territory of territories) {
-//             if (territory.units > 1) {
-//                 let attackTerritories = territory.enemyAdjacentTerritories();
-//                 if (attackTerritories.length > 0) {
-//                     attackFrom = territory;
-//                     attackTo = randomValue(attackTerritories);
-//                 }
-//             }
-//         }
-//
-//         if (attackFrom) {
-//             let attackUnits = attackFrom.units - 1;
-//
-//             game.attack(id, attackFrom.id, attackTo.id, attackUnits);
-//
-//             let battleOver = false;
-//
-//             while (!battleOver) {
-//                 game.roll(id, Math.min(game.battle.attackUnits, 3));
-//                 game.roll(attackTo.occupyingPlayer.id, Math.min(game.battle.defendUnits, 2));
-//
-//                 if (!game.battle) {
-//                     battleOver = true;
-//                 }
-//             }
-//         }
-//
-//         if (game.isGameOver()) {
-//             break;
-//         }
-//
-//         // TODO simulate movement
-//         // let p1Territories = game.playerTerritories(0);
-//         // game.moveTroops(0, p1Territories[1].id, p1Territories[1].ownAdjacentTerritories()[0].id, 1);
-//
-//         game.nextTurnPhase(id);
-//         game.endTurn(id);
-//     }
-// }
-//
-// function getCombinations(array, start, initialStuff, output) {
-//     if (initialStuff.length >= 3) {
-//         output.push(initialStuff);
-//     } else {
-//         var i;
-//
-//         for (i = start; i < array.length; ++i) {
-//             getCombinations(array, i + 1, initialStuff.concat(array[i]), output);
-//         }
-//     }
-// }
+function getCombinations(array, start, initialStuff, output) {
+    start = start || 0;
+    initialStuff = initialStuff || [];
+    output = output || [];
+
+    if (initialStuff.length >= 3) {
+        output.push(initialStuff);
+    } else {
+        var i;
+
+        for (i = start; i < array.length; ++i) {
+            getCombinations(array, i + 1, initialStuff.concat(array[i]), output);
+        }
+    }
+
+    return output;
+}
