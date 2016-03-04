@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('demo:start');
+const debug = require('debug')('risk:play');
 const Risk = require('./lib/risk');
 const Ai = require('./lib/risk/ai');
 const asciiMap = require('./map');
@@ -43,6 +43,7 @@ function parseInput(rawInput) {
     let input = rawInput.split(' ');
     let command = input.shift();
     let args = input;
+    console.log(args);
 
     switch (command) {
         case 'claimTerritory':
@@ -70,10 +71,10 @@ function parseInput(rawInput) {
             risk.act.rollDice(playerId, args[0]);
             break;
         case 'redeemCards':
-            risk.act.redeemCards(playerId, args[0]);
+            risk.act.redeemCards(playerId, args[0], args[1], args[2]);
             break;
         case 'moveUnits':
-            risk.act.moveUnits(playerId, args[0], args[1]. args[2]);
+            risk.act.moveUnits(playerId, args[0], args[1], args[2]);
             break;
         case 'fortifyPhase':
             risk.act.fortifyPhase(playerId);
@@ -107,8 +108,13 @@ rl.on('line', line => {
             }
         }
 
-        while (risk.currentPlayer.id !== playerId) {
+        while (risk.currentPlayer.id !== playerId ||
+            (risk.info.battle && risk.info.battle.currentPlayer !== playerId)) {
             aiAction();
+
+            if (risk.info.battle && risk.info.battle.defender.player === playerId) {
+                break;
+            }
         }
 
         rl.prompt();
@@ -156,13 +162,16 @@ function simulateAttack(player, attack) {
         }
     } else {
         risk.act.attack(player.id, attack.from.id, attack.to.id, attack.units);
-    }
-}
-function moveUnits (player) {
-    let movements = ai.whichUnitsToMove(player);
 
-    for (let move of movements) {
-        risk.act.moveUnits(player.id, move.from.id, move.to.id, move.units);
+        if (attack.to.id !== playerId) {
+            while (risk.info.battle) {
+                debug('battle between AI')
+                let battle = risk.info.battle;
+
+                risk.act.rollDice(player.id, Math.min(3, battle.attacker.units));
+                risk.act.rollDice(battle.defender.player, Math.min(2, battle.defender.units));
+            }
+        }
     }
 }
 
@@ -181,20 +190,35 @@ function simulateBattle() {
 
     if (risk.info.battle) {
         simulateAttack(player);
-    } else if (!risk.hasGameEnded()){
+    } else if (risk.info.turnPhase !== risk.info.TURN_PHASES.ATTACKING) {
         risk.act.attackPhase(player.id);
+    }
 
-        let attack = ai.whatToAttack(player);
+    if (!risk.hasGameEnded()) {
+        let keepAttacking = true;
 
-        if (Math.random() > 0.5 && attack) {
-            simulateAttack(player, attack);
-        } else {
-            risk.act.fortifyPhase(player.id);
+        while (keepAttacking && risk.info.battle.defender.player !== playerId) {
+            let attack = ai.whatToAttack(player);
+
+            if (Math.random() > 0.5 && attack) {
+                simulateAttack(player, attack);
+            } else {
+                keepAttacking = false;
+                risk.act.fortifyPhase(player.id);
+            }
         }
 
         moveUnits(player);
 
         risk.act.endTurn(player.id);
+    }
+}
+
+function moveUnits (player) {
+    let movements = ai.whichUnitsToMove(player);
+
+    for (let move of movements) {
+        risk.act.moveUnits(player.id, move.from.id, move.to.id, move.units);
     }
 }
 
