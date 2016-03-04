@@ -74,9 +74,9 @@ function simulateAttack(player, attack) {
 }
 
 function redeemCards (player) {
-    while (risk.currentPlayer.cards.length > 4) {
+    while (risk.act.cards().length > 4) {
         let combinations = () => {
-            return getCombinations(Array.from(risk.currentPlayer.cards).slice(0, 5));
+            return getCombinations(Array.from(risk.act.cards()).slice(0, 5));
         };
 
         for (let combination of combinations()) {
