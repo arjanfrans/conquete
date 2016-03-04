@@ -30,17 +30,20 @@ let players = [
         name: 'player1'
     },
     {
-        name: 'cpu2'
+        name: 'player2'
     },
     {
         name: 'cpu3'
+    },
+    {
+        name: 'cpu4'
     }
 ];
 
-let playerId = null;
+let playerIds = [];
 
 if (argv.player) {
-    playerId = 0;
+    playerIds = [0, 1];
 }
 
 let risk = Risk(players, options);
@@ -48,7 +51,7 @@ let ai = Ai(risk);
 
 risk.start();
 
-function parseInput(rawInput) {
+function parseInput(playerId, rawInput) {
     let input = rawInput.split(' ');
     let command = input.shift();
     let args = input;
@@ -56,7 +59,7 @@ function parseInput(rawInput) {
 
     switch (command) {
         case 'ct':
-        case 'claimTerritory':
+        case 'claimTerritory': {
             let territory = args[0];
 
             if (args[0] === 'random') {
@@ -65,14 +68,31 @@ function parseInput(rawInput) {
 
             risk.act.claimTerritory(playerId, territory);
             break;
+        }
         case 'do':
-        case 'deployOneUnit':
-            risk.act.deployOneUnit(playerId, args[0]);
+        case 'deployOneUnit': {
+            let territory = args[0];
+
+            if (args[0] === 'random') {
+                territory = randomValue(risk.currentPlayer.territories);
+            }
+
+            risk.act.deployOneUnit(playerId, territory);
             break;
+        }
         case 'du':
-        case 'deployUnits':
-            risk.act.deployUnits(playerId, args[0], args[1]);
+        case 'deployUnits': {
+            let territory = args[0];
+            let units = args[1];
+
+            if (args[0] === 'random') {
+                territory = randomValue(risk.currentPlayer.territories);
+                units = risk.act.availableUnits(playerId);
+            }
+
+            risk.act.deployUnits(playerId, territory, units);
             break;
+        }
         case 'ap':
         case 'attackPhase':
             risk.act.attackPhase(playerId);
@@ -131,15 +151,15 @@ function promptLoop() {
         exit();
     }
 
-    if (risk.currentPlayer.id === playerId || (risk.info.battle && risk.info.battle.currentPlayer === playerId)) {
+    if (playerIds.includes(risk.currentPlayer.id) || (risk.info.battle && playerIds.includes(risk.info.battle.currentPlayer))) {
         rl.prompt();
     }
 
-    if (risk.currentPlayer.id !== playerId || (risk.info.battle && risk.info.battle.currentPlayer !== playerId)) {
+    if (!playerIds.includes(risk.currentPlayer.id) || (risk.info.battle && !playerIds.includes(risk.info.battle.currentPlayer))) {
         aiAction();
 
 
-        if (risk.info.battle && risk.info.battle.currentPlayer === playerId) {
+        if (risk.info.battle && playerIds.includes(risk.info.battle.currentPlayer)) {
             rl.prompt();
         } else {
             promptLoop();
@@ -154,8 +174,17 @@ let autoSetupA = true;
 
 rl.on('line', line => {
     try {
-        if (risk.currentPlayer.id === playerId || (risk.info.battle && risk.info.battle.currentPlayer === playerId)) {
-            let output = parseInput(line);
+        let playerId = null;
+
+        // Necessary to check this first, if more than 1 players
+        if (risk.info.battle && playerIds.includes(risk.info.battle.currentPlayer)) {
+            playerId = risk.info.battle.currentPlayer;
+        } else if (playerIds.includes(risk.currentPlayer.id)) {
+            playerId = risk.currentPlayer.id;
+        }
+
+        if (playerId !== null) {
+            let output = parseInput(playerId, line);
 
             if (output) {
                 console.log(output);
@@ -190,7 +219,7 @@ function simulateAttack() {
     if (battle) {
         let battlePlayer = risk.info.battle.currentPlayer;
 
-        if (battlePlayer !== playerId) {
+        if (!playerIds.includes(battlePlayer)) {
             if (battle.attacker.player === battlePlayer) {
                 risk.act.rollDice(battlePlayer, Math.min(3, battle.attacker.units));
             } else {
@@ -242,9 +271,9 @@ function moveUnits (player) {
 }
 
 function redeemCards (player) {
-    while (risk.act.cards().length > 4) {
+    while (risk.act.cards(player.id).length > 4) {
         let combinations = () => {
-            return getCombinations(Array.from(risk.act.cards()).slice(0, 5));
+            return getCombinations(Array.from(risk.act.cards(player.id)).slice(0, 5));
         };
 
         for (let combination of combinations()) {
