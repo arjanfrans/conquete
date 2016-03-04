@@ -55,7 +55,6 @@ function parseInput(playerId, rawInput) {
     let input = rawInput.split(' ');
     let command = input.shift();
     let args = input;
-    console.log(args);
 
     switch (command) {
         case 'ct':
@@ -137,15 +136,13 @@ function parseInput(playerId, rawInput) {
 }
 
 function exit() {
-    debug('done');
+    console.log('done');
     process.exit(0);
 }
 
 let i = 0;
 function promptLoop() {
     i++;
-
-    console.log('#', i);
 
     if (risk.hasGameEnded()) {
         exit();
@@ -165,8 +162,6 @@ function promptLoop() {
             promptLoop();
         }
     }
-
-    if (i > 500) process.exit(0);
 }
 
 promptLoop();
@@ -278,7 +273,7 @@ function redeemCards (player) {
 
         for (let combination of combinations()) {
             if (risk.info.areCardsValid(combination)) {
-                risk.act.redeemCards(player.id, combination);
+                risk.act.redeemCards(player.id, ...combination);
 
                 break;
             }
