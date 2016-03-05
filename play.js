@@ -1,7 +1,7 @@
 'use strict';
 
 const debug = require('debug')('risk:play');
-const Risk = require('./lib/risk');
+const Risk = require('./lib/risk/index');
 const Ai = require('./lib/risk/ai');
 const asciiMap = require('./map');
 const helper = require('./helper');
