@@ -88,6 +88,9 @@ function parseInput(risk, playerId, rawInput) {
             return risk.getCards(playerId);
         case 'map':
             return asciiMap(risk.board.getTerritories());
+        case 'save':
+            risk.saveState();
+            break;
     }
 }
 

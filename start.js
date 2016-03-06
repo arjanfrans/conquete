@@ -7,6 +7,7 @@ const rl = readline.createInterface(process.stdin, process.stdout);
 const Risk = require('./lib/index');
 const commandParser = require('./client/command-parser');
 const randomValue = require('./helper').randomValue;
+const asciiMap = require('./map');
 const getCombinations = require('./helper').getCombinations;
 
 let map = Object.assign({}, require('./maps/classic'));
@@ -93,7 +94,12 @@ function exit() {
 
 let i = 0;
 function promptLoop() {
+    i++
+
     if (risk.isGameOver()) {
+        console.log(asciiMap(risk.board.getTerritories()));
+        console.log('############', i)
+
         exit();
     }
 

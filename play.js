@@ -155,7 +155,6 @@ function promptLoop() {
     if (!playerIds.includes(risk.currentPlayer.id) || (risk.info.battle && !playerIds.includes(risk.info.battle.currentPlayer))) {
         aiAction();
 
-
         if (risk.info.battle && playerIds.includes(risk.info.battle.currentPlayer)) {
             rl.prompt();
         } else {
