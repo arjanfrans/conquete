@@ -74,7 +74,13 @@ const PLAYER_COLORS = {
     '5': 'magenta'
 };
 
-function parseMap(territoryData) {
+function parseMap(territories) {
+    let territoryData = {};
+
+    for (let territory of territories) {
+        territoryData[territory.id] = territory;
+    }
+
     let newMap = [];
 
     for (let line of map.split('\n')) {

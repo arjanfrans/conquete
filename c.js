@@ -17,4 +17,4 @@ var opt = [ {
     }
 ];
 
-console.log(c(opt, ['joker_d', 'joker_4', 'joker_66']));
+console.log(c.isValidCombo(opt, ['joker_1', 'infantry_egypt', 'cavalry_china']));
