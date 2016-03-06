@@ -59,4 +59,4 @@ let options = {
     ]
 };
 
-risk(options);
+risk(options, state);
