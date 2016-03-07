@@ -4,10 +4,24 @@
         "movements": [],
         "phase": "attacking",
         "player": 0,
-        "unitsPlaced": 6,
+        "unitsPlaced": 4,
         "cardBonus": 0,
-        "battle": null,
-        "wonBattle": true
+        "battle": {
+            "from": "egypt",
+            "to": "north_africa",
+            "initialAttackUnits": 3,
+            "attackUnits": 3,
+            "defendUnits": 1,
+            "turn": 1,
+            "attackDice": [
+                6,
+                5,
+                5
+            ],
+            "defendDice": [],
+            "winner": null
+        },
+        "wonBattle": false
     },
     "cards": [
         "joker_0",
@@ -56,122 +70,132 @@
         "artillery_yakutsk"
     ],
     "cardQueue": [
-        "joker_0",
-        "cavalry_japan",
-        "artillery_central_america",
-        "cavalry_alberta",
-        "artillery_western_united_states",
-        "infantry_argentina",
-        "cavalry_ural",
-        "artillery_northwest_territory",
-        "artillery_indonesia",
-        "artillery_peru",
-        "cavalry_greenland",
         "infantry_egypt",
-        "artillery_kamchatka",
-        "artillery_scandinavia",
-        "joker_1",
-        "cavalry_china",
-        "infantry_south_africa",
-        "cavalry_quebec",
-        "cavalry_ukraine",
-        "artillery_siam",
-        "infantry_afganistan",
-        "infantry_ontario",
-        "cavalry_northern_europe",
-        "artillery_north_africa",
-        "cavalry_congo",
-        "cavalry_mongolia",
-        "cavalry_western_australia",
-        "artillery_western_europe",
-        "artillery_great_britain",
         "artillery_east_africa",
-        "infantry_southern_europe",
-        "cavalry_eastern_australia",
-        "infantry_alaska",
-        "artillery_yakutsk",
+        "cavalry_western_australia",
+        "infantry_south_africa",
         "infantry_venezuela",
-        "infantry_eastern_united_states",
-        "infantry_siberia",
-        "cavalry_madagascar",
-        "infantry_middle_east",
+        "artillery_yakutsk",
+        "artillery_peru",
+        "artillery_scandinavia",
+        "artillery_kamchatka",
         "artillery_india",
-        "infantry_new_guinea"
+        "cavalry_madagascar",
+        "infantry_ontario",
+        "artillery_western_europe",
+        "infantry_siberia",
+        "artillery_great_britain",
+        "cavalry_brazil",
+        "cavalry_japan",
+        "artillery_northwest_territory",
+        "cavalry_northern_europe",
+        "infantry_iceland",
+        "cavalry_mongolia",
+        "cavalry_congo",
+        "artillery_central_america",
+        "cavalry_eastern_australia",
+        "infantry_afganistan",
+        "artillery_indonesia",
+        "infantry_eastern_united_states",
+        "cavalry_china",
+        "artillery_western_united_states",
+        "infantry_irkutsk",
+        "infantry_alaska",
+        "infantry_argentina",
+        "joker_1",
+        "infantry_middle_east",
+        "infantry_southern_europe",
+        "cavalry_ukraine",
+        "cavalry_greenland",
+        "infantry_new_guinea",
+        "artillery_north_africa",
+        "cavalry_quebec",
+        "joker_0",
+        "cavalry_alberta",
+        "cavalry_ural",
+        "artillery_siam"
     ],
     "players": [
         {
             "id": 0,
-            "name": "p1",
-            "dead": false,
-            "startUnits": 0,
-            "territoryIds": [
-                "south_africa",
-                "east_africa",
-                "north_africa",
-                "india",
-                "irkutsk",
-                "kamchatka",
-                "new_guinea",
-                "alberta",
-                "northwest_territory",
-                "argentina",
-                "brazil",
-                "peru",
-                "venezuela",
-                "egypt"
-            ],
-            "cards": [
-                "infantry_iceland",
-                "infantry_irkutsk"
-            ],
-            "cardsCount": 2
-        },
-        {
-            "id": 1,
-            "name": "c2",
+            "name": {
+                "domain": null,
+                "_events": {},
+                "_eventsCount": 0
+            },
             "dead": false,
             "startUnits": 0,
             "territoryIds": [
                 "congo",
+                "egypt",
+                "madagascar",
                 "afganistan",
                 "china",
-                "japan",
-                "middle_east",
+                "irkutsk",
                 "mongolia",
-                "siam",
-                "siberia",
                 "eastern_australia",
                 "great_britain",
-                "scandinavia",
-                "southern_europe",
-                "western_united_states",
-                "ural",
-                "yakutsk"
+                "northern_europe",
+                "western_europe",
+                "alberta",
+                "greenland",
+                "ontario"
             ],
-            "cards": [
-                "cavalry_brazil"
-            ],
-            "cardsCount": 1
+            "cards": [],
+            "cardsCount": 0
         },
         {
-            "id": 2,
-            "name": "c3",
+            "id": 1,
+            "name": {
+                "domain": null,
+                "_events": {},
+                "_eventsCount": 0
+            },
             "dead": false,
             "startUnits": 0,
             "territoryIds": [
-                "madagascar",
-                "indonesia",
+                "east_africa",
+                "north_africa",
+                "india",
+                "siam",
+                "siberia",
                 "western_australia",
-                "iceland",
-                "northern_europe",
                 "ukraine",
-                "western_europe",
+                "eastern_united_states",
+                "northwest_territory",
+                "western_united_states",
+                "peru",
+                "venezuela",
+                "ural",
+                "yakutsk"
+            ],
+            "cards": [],
+            "cardsCount": 0
+        },
+        {
+            "id": 2,
+            "name": {
+                "domain": null,
+                "_events": {},
+                "_eventsCount": 0
+            },
+            "dead": false,
+            "startUnits": 0,
+            "territoryIds": [
+                "south_africa",
+                "japan",
+                "kamchatka",
+                "middle_east",
+                "indonesia",
+                "new_guinea",
+                "iceland",
+                "scandinavia",
+                "southern_europe",
                 "alaska",
                 "central_america",
-                "eastern_united_states",
-                "greenland",
-                "ontario",
-                "quebec"
+                "quebec",
+                "argentina",
+                "brazil"
             ],
             "cards": [],
             "cardsCount": 0
@@ -187,8 +211,8 @@
             {
                 "id": "south_africa",
                 "name": "South Africa",
-                "owner": 0,
-                "units": 1,
+                "owner": 2,
+                "units": 2,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
                     "madagascar",
@@ -199,8 +223,8 @@
             {
                 "id": "congo",
                 "name": "Congo",
-                "owner": 1,
-                "units": 2,
+                "owner": 0,
+                "units": 1,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
                     "south_africa",
@@ -211,8 +235,8 @@
             {
                 "id": "east_africa",
                 "name": "East Africa",
-                "owner": 0,
-                "units": 3,
+                "owner": 1,
+                "units": 4,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
                     "south_africa",
@@ -227,7 +251,7 @@
                 "id": "egypt",
                 "name": "Egypt",
                 "owner": 0,
-                "units": 10,
+                "units": 26,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
                     "east_africa",
@@ -239,8 +263,8 @@
             {
                 "id": "madagascar",
                 "name": "Madagascar",
-                "owner": 2,
-                "units": 5,
+                "owner": 0,
+                "units": 1,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
                     "south_africa",
@@ -250,8 +274,8 @@
             {
                 "id": "north_africa",
                 "name": "North Africa",
-                "owner": 0,
-                "units": 6,
+                "owner": 1,
+                "units": 1,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
                     "congo",
@@ -265,8 +289,8 @@
             {
                 "id": "afganistan",
                 "name": "Afganistan",
-                "owner": 1,
-                "units": 3,
+                "owner": 0,
+                "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "china",
@@ -279,7 +303,7 @@
             {
                 "id": "china",
                 "name": "China",
-                "owner": 1,
+                "owner": 0,
                 "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -294,7 +318,7 @@
             {
                 "id": "india",
                 "name": "India",
-                "owner": 0,
+                "owner": 1,
                 "units": 2,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -320,8 +344,8 @@
             {
                 "id": "japan",
                 "name": "Japan",
-                "owner": 1,
-                "units": 1,
+                "owner": 2,
+                "units": 3,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "kamchatka",
@@ -331,8 +355,8 @@
             {
                 "id": "kamchatka",
                 "name": "Kamchatka",
-                "owner": 0,
-                "units": 1,
+                "owner": 2,
+                "units": 2,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "irkutsk",
@@ -345,8 +369,8 @@
             {
                 "id": "middle_east",
                 "name": "Middle East",
-                "owner": 1,
-                "units": 10,
+                "owner": 2,
+                "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "east_africa",
@@ -360,8 +384,8 @@
             {
                 "id": "mongolia",
                 "name": "Mongolia",
-                "owner": 1,
-                "units": 4,
+                "owner": 0,
+                "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "china",
@@ -375,7 +399,7 @@
                 "id": "siam",
                 "name": "Siam",
                 "owner": 1,
-                "units": 3,
+                "units": 5,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "china",
@@ -387,7 +411,7 @@
                 "id": "siberia",
                 "name": "Siberia",
                 "owner": 1,
-                "units": 1,
+                "units": 4,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "china",
@@ -400,8 +424,8 @@
             {
                 "id": "eastern_australia",
                 "name": "Eastern Australia",
-                "owner": 1,
-                "units": 3,
+                "owner": 0,
+                "units": 1,
                 "continentId": "australia",
                 "adjacentTerritoryIds": [
                     "new_guinea",
@@ -412,7 +436,7 @@
                 "id": "indonesia",
                 "name": "Indonesia",
                 "owner": 2,
-                "units": 1,
+                "units": 5,
                 "continentId": "australia",
                 "adjacentTerritoryIds": [
                     "siam",
@@ -423,7 +447,7 @@
             {
                 "id": "new_guinea",
                 "name": "New Guinea",
-                "owner": 0,
+                "owner": 2,
                 "units": 2,
                 "continentId": "australia",
                 "adjacentTerritoryIds": [
@@ -435,8 +459,8 @@
             {
                 "id": "western_australia",
                 "name": "Western Australia",
-                "owner": 2,
-                "units": 9,
+                "owner": 1,
+                "units": 2,
                 "continentId": "australia",
                 "adjacentTerritoryIds": [
                     "eastern_australia",
@@ -447,8 +471,8 @@
             {
                 "id": "great_britain",
                 "name": "Great Britain",
-                "owner": 1,
-                "units": 4,
+                "owner": 0,
+                "units": 1,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
                     "iceland",
@@ -472,8 +496,8 @@
             {
                 "id": "northern_europe",
                 "name": "Northern Europe",
-                "owner": 2,
-                "units": 2,
+                "owner": 0,
+                "units": 1,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
                     "great_britain",
@@ -486,8 +510,8 @@
             {
                 "id": "scandinavia",
                 "name": "Scandinavia",
-                "owner": 1,
-                "units": 1,
+                "owner": 2,
+                "units": 3,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
                     "great_britain",
@@ -499,8 +523,8 @@
             {
                 "id": "southern_europe",
                 "name": "Southern Europe",
-                "owner": 1,
-                "units": 1,
+                "owner": 2,
+                "units": 5,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
                     "egypt",
@@ -514,7 +538,7 @@
             {
                 "id": "ukraine",
                 "name": "Ukraine",
-                "owner": 2,
+                "owner": 1,
                 "units": 2,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
@@ -529,7 +553,7 @@
             {
                 "id": "western_europe",
                 "name": "Western Europe",
-                "owner": 2,
+                "owner": 0,
                 "units": 1,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
@@ -543,7 +567,7 @@
                 "id": "alaska",
                 "name": "Alaska",
                 "owner": 2,
-                "units": 4,
+                "units": 2,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "kamchatka",
@@ -568,7 +592,7 @@
                 "id": "central_america",
                 "name": "Central America",
                 "owner": 2,
-                "units": 1,
+                "units": 2,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "eastern_united_states",
@@ -579,8 +603,8 @@
             {
                 "id": "eastern_united_states",
                 "name": "Eastern United States",
-                "owner": 2,
-                "units": 5,
+                "owner": 1,
+                "units": 2,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "central_america",
@@ -592,8 +616,8 @@
             {
                 "id": "greenland",
                 "name": "Greenland",
-                "owner": 2,
-                "units": 5,
+                "owner": 0,
+                "units": 1,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "iceland",
@@ -605,7 +629,7 @@
             {
                 "id": "northwest_territory",
                 "name": "Northwest Territory",
-                "owner": 0,
+                "owner": 1,
                 "units": 1,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
@@ -618,7 +642,7 @@
             {
                 "id": "ontario",
                 "name": "Ontario",
-                "owner": 2,
+                "owner": 0,
                 "units": 1,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
@@ -634,7 +658,7 @@
                 "id": "quebec",
                 "name": "Quebec",
                 "owner": 2,
-                "units": 2,
+                "units": 1,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "eastern_united_states",
@@ -646,7 +670,7 @@
                 "id": "western_united_states",
                 "name": "Western United States",
                 "owner": 1,
-                "units": 6,
+                "units": 1,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "alberta",
@@ -658,8 +682,8 @@
             {
                 "id": "argentina",
                 "name": "Argentina",
-                "owner": 0,
-                "units": 1,
+                "owner": 2,
+                "units": 4,
                 "continentId": "south_america",
                 "adjacentTerritoryIds": [
                     "brazil",
@@ -669,8 +693,8 @@
             {
                 "id": "brazil",
                 "name": "Brazil",
-                "owner": 0,
-                "units": 5,
+                "owner": 2,
+                "units": 2,
                 "continentId": "south_america",
                 "adjacentTerritoryIds": [
                     "north_africa",
@@ -682,8 +706,8 @@
             {
                 "id": "peru",
                 "name": "Peru",
-                "owner": 0,
-                "units": 3,
+                "owner": 1,
+                "units": 2,
                 "continentId": "south_america",
                 "adjacentTerritoryIds": [
                     "argentina",
@@ -694,8 +718,8 @@
             {
                 "id": "venezuela",
                 "name": "Venezuela",
-                "owner": 0,
-                "units": 1,
+                "owner": 1,
+                "units": 3,
                 "continentId": "south_america",
                 "adjacentTerritoryIds": [
                     "central_america",
@@ -707,7 +731,7 @@
                 "id": "ural",
                 "name": "Ural",
                 "owner": 1,
-                "units": 3,
+                "units": 5,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "afganistan",
@@ -835,7 +859,7 @@
             {
                 "id": "south_america",
                 "name": "South America",
-                "owner": 0,
+                "owner": null,
                 "bonus": 2,
                 "territoryIds": [
                     "argentina",
