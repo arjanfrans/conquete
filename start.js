@@ -3,6 +3,7 @@
 const debug = require('debug')('risk:play');
 const argv = require('minimist')(process.argv.slice(2));
 const readline = require('readline');
+const fs = require('fs');
 const rl = readline.createInterface(process.stdin, process.stdout);
 const Risk = require('./lib/index');
 const commandParser = require('./client/command-parser');
@@ -19,6 +20,7 @@ map.territories.forEach((territory, index) => {
 });
 
 let state = null;
+state = JSON.parse(fs.readFileSync('./risk_state'));
 // let state = {
 //     phase: 'setupA',
 //     turn: {},

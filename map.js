@@ -103,7 +103,7 @@ function parseMap(territories) {
                 let fill = '';
 
                 if (data === 'id') {
-                    color = CONTINENT_COLORS[territory.continent.id];
+                    color = CONTINENT_COLORS[territory.continentId];
                     underline = true;
                     replacement = territory.id.toString().substring(0, 5);
                     fill = ' '.repeat(Math.abs(param.length - replacement.length));
