@@ -204,12 +204,22 @@ playerEvents.on(PLAYER_EVENTS.REQUIRE_ONE_UNIT_DEPLOY, data => {
 });
 
 playerEvents.on(PLAYER_EVENTS.REQUIRE_PLACEMENT_ACTION, data => {
-    write(`redeem cards and deploy units ({$data.availableUnits} units availabl)`);
+    try {
+        throw new Error();
+    } catch (e) {
+        console.log(e.stack)
+    }
+    write(`redeem cards and deploy units (${data.availableUnits} units available)`);
     rl.prompt();
 });
 
 playerEvents.on(PLAYER_EVENTS.REQUIRE_ATTACK_ACTION, data => {
     write(`attack or continue to fortify`);
+    rl.prompt();
+});
+
+playerEvents.on(PLAYER_EVENTS.REQUIRE_FORTIFY_ACTION, data => {
+    write(`move units or end your turn`);
     rl.prompt();
 });
 
@@ -236,6 +246,10 @@ Object.keys(aiEventEmitters).forEach(playerId => {
 
     aiEvent.on(PLAYER_EVENTS.REQUIRE_ATTACK_ACTION, data => {
         simulation.simulateAttack();
+    });
+
+    aiEvent.on(PLAYER_EVENTS.REQUIRE_FORTIFY_ACTION, data => {
+        simulation.simulateFortify();
     });
 });
 
