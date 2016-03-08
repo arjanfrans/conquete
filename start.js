@@ -26,7 +26,7 @@ map.territories.forEach((territory, index) => {
 });
 
 let state = null;
-state = JSON.parse(fs.readFileSync('./risk_state'));
+// state = JSON.parse(fs.readFileSync('./risk_state'));
 
 let playerEvents = new EventEmitter();
 
@@ -204,11 +204,6 @@ playerEvents.on(PLAYER_EVENTS.REQUIRE_ONE_UNIT_DEPLOY, data => {
 });
 
 playerEvents.on(PLAYER_EVENTS.REQUIRE_PLACEMENT_ACTION, data => {
-    try {
-        throw new Error();
-    } catch (e) {
-        console.log(e.stack)
-    }
     write(`redeem cards and deploy units (${data.availableUnits} units available)`);
     rl.prompt();
 });
@@ -229,7 +224,6 @@ Object.keys(aiEventEmitters).forEach(playerId => {
 
     aiEvent.on(PLAYER_EVENTS.REQUIRE_DICE_ROLL, data => {
         risk.act.rollDice(playerId, data.maxDice);
-        debug(`${playerId} - rolling dice`);
     });
 
     aiEvent.on(PLAYER_EVENTS.REQUIRE_TERRITORY_CLAIM, data => {
