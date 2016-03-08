@@ -12,50 +12,51 @@ function simulation (risk) {
         } else if (risk.phase === risk.PHASES.SETUP_B) {
             simulateSetupB();
         } else if (risk.phase === risk.PHASES.BATTLE) {
-            // simulateBattle();
+            simulateBattle();
         }
     }
 
     function simulateAttack() {
         let player = risk.currentPlayer;
-        let battle = risk.battle;
+        let attack = risk.utils.ai.whatToAttack(player.id);
 
-        if (battle) {
-            let battlePlayer = risk.battle.currentPlayer;
-
-            if (!playerIds.includes(battlePlayer)) {
-                if (battle.attacker.player === battlePlayer) {
-                    risk.act.rollDice(battlePlayer, Math.min(3, battle.attacker.units));
-                } else {
-                    risk.act.rollDice(battlePlayer, Math.min(2, battle.defender.units));
-                }
-            }
+        if (Math.random() > 0.5 && attack) {
+            risk.act.attack(player.id, attack.from.id, attack.to.id, attack.units);
         } else {
-            let attack = risk.utils.ai.whatToAttack(player.id);
-
-            if (Math.random() > 0.5 && attack) {
-                risk.act.attack(player.id, attack.from.id, attack.to.id, attack.units);
-            } else {
-                risk.act.fortifyPhase(player.id);
-            }
+            risk.act.fortifyPhase(player.id);
         }
+    }
+    // function simulateAttack() {
+    //     let player = risk.currentPlayer;
+    //     let battle = risk.battle;
+    //
+    //     if (!battle) {
+    //         let attack = risk.utils.ai.whatToAttack(player.id);
+    //
+    //         if (Math.random() > 0.5 && attack) {
+    //             risk.act.attack(player.id, attack.from.id, attack.to.id, attack.units);
+    //         } else {
+    //             risk.act.fortifyPhase(player.id);
+    //         }
+    //     }
+    // }
+    //
+    //
+    function simulatePlacement () {
+        let player = risk.currentPlayer;
+
+        redeemCards(player);
+
+        let placements = risk.utils.ai.whereToDeployUnits(risk.currentPlayer.id);
+
+        for (let placement of placements) {
+            risk.act.deployUnits(player.id, placement.territory.id, placement.units);
+        }
+
+        risk.act.attackPhase(player.id);
     }
 
     function simulateBattle() {
-        let player = risk.currentPlayer;
-
-        if (risk.turnPhase === risk.TURN_PHASES.PLACEMENT) {
-            redeemCards(player);
-
-            let placements = risk.utils.ai.whereToDeployUnits(risk.currentPlayer.id);
-
-            for (let placement of placements) {
-                risk.act.deployUnits(player.id, placement.territory.id, placement.units);
-            }
-
-            risk.act.attackPhase(player.id);
-        }
-
         if (!risk.isGameOver()) {
             if (risk.turnPhase === risk.TURN_PHASES.FORTIFYING) {
                 moveUnits(player);
@@ -109,6 +110,8 @@ function simulation (risk) {
         aiAction,
         simulateSetupA,
         simulateSetupB,
+        simulatePlacement,
+        simulateAttack,
         simulateBattle
     };
 }

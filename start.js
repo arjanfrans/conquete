@@ -101,13 +101,10 @@ gameEvents.on(EVENTS.GAME_START, () => {
 
 gameEvents.on(EVENTS.TURN_CHANGE, data => {
     write(`turn changed to player ${data.playerId}`);
-
-    currentPlayerId = data.playerId;
-
     if (playerIds.includes(data.playerId)) {
-        rl.prompt();
+        currentPlayerId = data.playerId;
     } else {
-        simulation.aiAction();
+        currentPlayerId = null;
     }
 });
 
@@ -129,11 +126,6 @@ gameEvents.on(EVENTS.DEPLOY_UNITS, data => {
 
 gameEvents.on(EVENTS.ATTACK, data => {
     write('attack initiated', data);
-
-    if (playerIds.includes(data.attacker)) {
-        currentPlayerId = data.attacker;
-        rl.prompt();
-    }
 });
 
 gameEvents.on(EVENTS.ATTACK_DICE_ROLL, data => {
@@ -142,10 +134,30 @@ gameEvents.on(EVENTS.ATTACK_DICE_ROLL, data => {
 
 gameEvents.on(EVENTS.DEFEND_DICE_ROLL, data => {
     write(`defender rolled dice: ${data.dice.join(', ')}`);
+
+    let res = data.results;
+
+    if (res.attackKilled > 0) {
+        write(`attacker units killed: ${res.attackKilled}`);
+    }
+
+    if (res.defendKilled > 0) {
+        write(`defender units killed: ${res.defendKilled}`);
+    }
+
+    write(`attacker units remaining ${res.attackRemaining}, defender units remaining ${res.defendRemaining}`);
 });
 
 gameEvents.on(EVENTS.BATTLE_END, data => {
-    write(`battle ended, player ${data.winner} won`);
+    let attack = data.type === 'attack' ? 'attacking' : 'defending';
+
+    write(`battle ended, ${attack} player ${data.winner} won`);
+});
+
+gameEvents.on(EVENTS.MOVE_UNITS, data => {
+    for (let move of data.movements) {
+        write(`${move.units} units moved by player ${data.playerId} from ${move.from} to ${move.to}`);
+    }
 });
 
 rl.on('line', line => {
@@ -156,7 +168,9 @@ rl.on('line', line => {
             console.log(output);
         }
 
-        rl.prompt();
+        if (currentPlayerId === risk.currentPlayer.id) {
+            rl.prompt();
+        }
     } catch (err) {
         rl.prompt();
         console.log(err.stack);
@@ -167,6 +181,35 @@ rl.on('line', line => {
 
 playerEvents.on(PLAYER_EVENTS.REQUIRE_DICE_ROLL, data => {
     write(`${data.type} dice roll required, ${data.maxDice} dice available`);
+    currentPlayerId = 0;
+    rl.prompt();
+});
+
+playerEvents.on(PLAYER_EVENTS.NEW_CARD, data => {
+    write(`new card received: ${data.card}`);
+});
+
+playerEvents.on(PLAYER_EVENTS.QUEUED_MOVE, data => {
+    write(`${data.units} units queued to move from ${data.from} to ${data.to}`);
+});
+
+playerEvents.on(PLAYER_EVENTS.REQUIRE_TERRITORY_CLAIM, data => {
+    write(`claim a territory: ${data.availableTerritoryIds.join(', ')}`);
+    rl.prompt();
+});
+
+playerEvents.on(PLAYER_EVENTS.REQUIRE_ONE_UNIT_DEPLOY, data => {
+    write(`deploy 1 unit to one of your territitories (${data.availableUnits} units remaining)`);
+    rl.prompt();
+});
+
+playerEvents.on(PLAYER_EVENTS.REQUIRE_PLACEMENT_ACTION, data => {
+    write(`redeem cards and deploy units ({$data.availableUnits} units availabl)`);
+    rl.prompt();
+});
+
+playerEvents.on(PLAYER_EVENTS.REQUIRE_ATTACK_ACTION, data => {
+    write(`attack or continue to fortify`);
     rl.prompt();
 });
 
@@ -176,13 +219,27 @@ Object.keys(aiEventEmitters).forEach(playerId => {
 
     aiEvent.on(PLAYER_EVENTS.REQUIRE_DICE_ROLL, data => {
         risk.act.rollDice(playerId, data.maxDice);
+        debug(`${playerId} - rolling dice`);
+    });
+
+    aiEvent.on(PLAYER_EVENTS.REQUIRE_TERRITORY_CLAIM, data => {
+        simulation.simulateSetupA();
+    });
+
+    aiEvent.on(PLAYER_EVENTS.REQUIRE_ONE_UNIT_DEPLOY, data => {
+        simulation.simulateSetupB();
+    });
+
+    aiEvent.on(PLAYER_EVENTS.REQUIRE_PLACEMENT_ACTION, data => {
+        simulation.simulatePlacement();
+    });
+
+    aiEvent.on(PLAYER_EVENTS.REQUIRE_ATTACK_ACTION, data => {
+        simulation.simulateAttack();
     });
 });
 
 risk.start();
-
-
-
 
 
 
