@@ -30,13 +30,10 @@ let state = null;
 
 let playerEvents = new EventEmitter();
 
-let e1 = new EventEmitter();
-let e2 = new EventEmitter();
-e1.id = '1';
-e2.id = '2';
 let aiEventEmitters = {
-    '1': e1,
-    '2': e2
+    '0': new EventEmitter(),
+    '1': new EventEmitter(),
+    '2': new EventEmitter()
 };
 
 let options = {
@@ -52,7 +49,8 @@ let options = {
     players: [
         {
             name: 'p1',
-            events: playerEvents
+            events: aiEventEmitters['0']
+            // events: playerEvents
         },
         {
             name: 'c2',
@@ -88,7 +86,7 @@ let gameEvents = new EventEmitter();
 let risk = Risk(gameEvents, options, state);
 let simulation = Simulation(risk);
 
-let playerIds = [0];
+let playerIds = [];
 let currentPlayerId = null;
 
 function write (...data) {
@@ -223,27 +221,59 @@ Object.keys(aiEventEmitters).forEach(playerId => {
     let aiEvent = aiEventEmitters[playerId];
 
     aiEvent.on(PLAYER_EVENTS.REQUIRE_DICE_ROLL, data => {
-        risk.act.rollDice(playerId, data.maxDice);
+        debug(`${playerId} - ${data.type} dice roll required, ${data.maxDice} dice available`);
+
+        process.nextTick(() => {
+            risk.act.rollDice(playerId, data.maxDice);
+        });
+    });
+
+    aiEvent.on(PLAYER_EVENTS.NEW_CARD, data => {
+        debug(`${playerId} - new card received: ${data.card}`);
     });
 
     aiEvent.on(PLAYER_EVENTS.REQUIRE_TERRITORY_CLAIM, data => {
-        simulation.simulateSetupA();
+        debug(`${playerId} - claim a territory: ${data.availableTerritoryIds.join(', ')}`);
+
+        process.nextTick(() => {
+            simulation.simulateSetupA();
+        });
+    });
+
+    playerEvents.on(PLAYER_EVENTS.QUEUED_MOVE, data => {
+        debug(`${playerId} - ${data.units} units queued to move from ${data.from} to ${data.to}`);
     });
 
     aiEvent.on(PLAYER_EVENTS.REQUIRE_ONE_UNIT_DEPLOY, data => {
-        simulation.simulateSetupB();
+        debug(`${playerId} - deploy 1 unit to one of your territitories (${data.availableUnits} units remaining)`);
+
+        process.nextTick(() => {
+            simulation.simulateSetupB();
+        });
     });
 
     aiEvent.on(PLAYER_EVENTS.REQUIRE_PLACEMENT_ACTION, data => {
-        simulation.simulatePlacement();
+        debug(`${playerId} - redeem cards and deploy units (${data.availableUnits} units available)`);
+
+        process.nextTick(() => {
+            simulation.simulatePlacement();
+        });
     });
 
     aiEvent.on(PLAYER_EVENTS.REQUIRE_ATTACK_ACTION, data => {
-        simulation.simulateAttack();
+        debug(`{$playerId} - attack or continue to fortify`);
+
+        process.nextTick(() => {
+            simulation.simulateAttack();
+        });
     });
 
     aiEvent.on(PLAYER_EVENTS.REQUIRE_FORTIFY_ACTION, data => {
-        simulation.simulateFortify();
+        debug(`{$playerId} - move units or end your turn`);
+
+        process.nextTick(() => {
+            simulation.simulateFortify();
+        });
     });
 });
 
