@@ -79,7 +79,6 @@ function parseInput(risk, playerId, rawInput) {
         case 'au':
         case 'availableUnits':
             return risk.getAvailableUnits(playerId);
-            break;
         case 'at':
         case 'availableTerritories':
             return risk.board.getAvailableTerritories();
