@@ -26,17 +26,22 @@ class Room {
         for (let client of this.clients.values()) {
             players.push({
                 name: client.name,
-                events: client.socket
+                events: this.io.to(client.socket.id)
             });
         }
 
         options.players = players;
 
-        this.game = Risk(this.io.to(this.name), options);
+        this.game = Risk(this.io.to(this.name), options, null);
 
-        this.started = true;
-        this.game.start();
-        debug('game started');
+        if (this.game) {
+            this.started = true;
+            this.game.start();
+
+            debug('game started');
+        } else {
+            throw new Error('Unable to start game');
+        }
     };
 
     join (client) {

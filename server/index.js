@@ -9,6 +9,10 @@ const Room = require('./Room');
 const clients = new Map();
 const rooms = new Map();
 
+function error (socket, ...data) {
+    io.to(socket.id).emit('error', ...data);
+}
+
 io.on('connection', socket => {
     let client = null;
 
@@ -37,13 +41,13 @@ io.on('connection', socket => {
 
             client.inRoom = room;
 
-            debug('room created', client, room.toJSON());
+            debug('room created', client.id, room.toJSON());
         } catch (err) {
-            socket.emit('error', {
+            error(socket, {
                 error: 'error creating room'
             });
 
-            debug('error creating room', err);
+            debug('error creating room', err.stack);
         }
     });
 
@@ -61,11 +65,11 @@ io.on('connection', socket => {
 
             room.join(client);
 
-            debug('client joined room', room, client);
+            debug('client joined room', room.name, client.id);
         } catch (err) {
-            socket.emit('error', { error: 'error joining room' });
+            error(socket, { error: 'error joining room' });
 
-            debug('error joining room', err);
+            debug('error joining room', err.stack);
         }
     });
 
@@ -75,7 +79,7 @@ io.on('connection', socket => {
             client.inRoom.leave(client);
             client.inRoom = null;
         } else {
-            socket.emit('error', {
+            error(socket, {
                 error: 'not in room'
             });
         }
@@ -89,9 +93,11 @@ io.on('connection', socket => {
                 throw Error('Not in a room');
             }
         } catch (err) {
-            socket.emit('error', {
+            error(socket, {
                 error: 'error starting game'
             });
+
+            debug('error starting game', err.stack);
         }
     });
 
@@ -100,7 +106,7 @@ io.on('connection', socket => {
     });
 
     socket.on('error', err => {
-        console.log(err ? err.stack : err);
+        console.log('global error', err ? err.stack : err);
     });
 });
 
