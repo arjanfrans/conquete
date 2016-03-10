@@ -20,7 +20,7 @@ const PLAYER_EVENTS = eventTypes.PLAYER_EVENTS;
 let map = Object.assign({}, require('./maps/classic'));
 
 let state = null;
-state = JSON.parse(fs.readFileSync('./risk_state'));
+// state = JSON.parse(fs.readFileSync('./risk_state'));
 
 let playerEvents = new EventEmitter();
 
@@ -43,8 +43,8 @@ let options = {
     players: [
         {
             name: 'p1',
-            // events: aiEventEmitters['0']
-            events: playerEvents
+            events: aiEventEmitters['0']
+            // events: playerEvents
         },
         {
             name: 'c2',
@@ -80,7 +80,7 @@ let gameEvents = new EventEmitter();
 let risk = Risk(gameEvents, options, state);
 let simulation = Simulation(risk);
 
-let playerIds = [0];
+let playerIds = [];
 let currentPlayerId = null;
 
 function write (...data) {
@@ -156,6 +156,11 @@ gameEvents.on(EVENTS.MOVE_UNITS, data => {
     }
 });
 
+gameEvents.on(EVENTS.GAME_END, data => {
+    write(`game has ended, winner: ${data.winner}`);
+    process.exit(0);
+});
+
 rl.on('line', line => {
     try {
         let output = commandParser(risk, currentPlayerId, line);
@@ -215,7 +220,7 @@ playerEvents.on(PLAYER_EVENTS.REQUIRE_FORTIFY_ACTION, data => {
 });
 
 Object.keys(aiEventEmitters).forEach(playerId => {
-    let time = 10;
+    let time = 0;
     playerId = Number.parseInt(playerId, 10);
     let aiEvent = aiEventEmitters[playerId];
 
