@@ -81,7 +81,11 @@ export default class VectorLayersExample extends Component {
         let startPoint = mappedTerritories.get(this.state.startId).center;
         let endPoint = mappedTerritories.get(this.state.endId).center;
 
-        line = <Polyline color="red" positions={ [startPoint, endPoint] } />;
+        line = (<Polyline color="red" positions={ [startPoint, endPoint] } >
+                    <Popup>
+                        <span>yoooooooooooooo</span>
+                    </Popup>
+                </Polyline>);
     }
 
     return (

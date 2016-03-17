@@ -19,9 +19,14 @@
   "homepage": "https://github.com/arjanfrans/node-risk#readme",
   "dependencies": {
     "geojson-utils": "^1.1.0",
+    "immutable": "^3.7.6",
     "leaflet": "^0.7.7",
     "react": "^0.14.7",
-    "react-leaflet": "^0.10.2"
+    "react-leaflet": "^0.10.2",
+    "react-redux": "^4.4.1",
+    "redux": "^3.3.1",
+    "redux-immutable": "^3.0.6",
+    "redux-thunk": "^2.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.3.17",

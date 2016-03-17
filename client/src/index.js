@@ -1,13 +1,13 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux'
 
-import Board from './components/Board';
+import store from './store';
+import App from './containers/App';
 
-const examples = (
-  <div>
-    <h1>Risk on maps</h1>
-    <Board />
-  </div>
+ReactDOM.render(
+    <Provider store={ store }>
+        <App />
+    </Provider>,
+    document.getElementById('root')
 );
-
-render(examples, document.getElementById('root'));
