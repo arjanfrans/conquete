@@ -14,7 +14,7 @@ import {
   Marker,
   TileLayer,
 } from 'react-leaflet';
-import territories from '../territories.json';
+import territories from '../data/territories.json';
 
 const mappedTerritories = new Map(territories.features.map(territory => {
     let point = gju.centroid(territory.geometry);
