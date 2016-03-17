@@ -1,10 +1,15 @@
 'use strict';
 
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-    entry: path.resolve(__dirname, 'src/index.js'),
-    devtool: 'eval-source-map',
+    entry: [
+        'webpack-dev-server/client?http://localhost:3000',
+        'webpack/hot/only-dev-server',
+        path.resolve(__dirname, 'src/index.js'),
+    ],
+    devtool: 'eval-cheap-module-source-map',
     include: [
         path.resolve(__dirname, 'src')
     ],
@@ -13,15 +18,15 @@ module.exports = {
         path: __dirname + '/dist',
         filename: 'bundle.js'
     },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ],
     module: {
         loaders: [
             {
                 test: /.jsx?$/,
-                loader: 'babel',
-                exclude: /node_modules/,
-                query: {
-                    presets: ['es2015', 'stage-0', 'react']
-                }
+                loaders: ['react-hot', 'babel?presets[]=react,presets[]=es2015,presets[]=stage-0'],
+                exclude: /node_modules/
             },
             {
                 test: /\.css?$/,

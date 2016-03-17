@@ -4,7 +4,7 @@
   "description": "Logic for the risk board game",
   "main": "index.js",
   "scripts": {
-    "run": "node --es_staging simulation ./lib/cli/start.js",
+    "cli": "node --es_staging ./lib/cli/start.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Arjan Frans <arjanfrans.com@gmail.com>",
@@ -17,5 +17,7 @@
     "minimist": "^1.2.0",
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5"
+  },
+  "devDependencies": {
   }
 }

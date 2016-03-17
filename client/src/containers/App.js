@@ -4,10 +4,13 @@ import { bindActionCreators } from 'redux';
 import Actions from '../actions';
 
 import Board from '../components/Board';
+import Info from '../components/Info';
+import DevTools from './DevTools';
 
 class App extends Component {
     static PropTypes = {
-        actions: PropTypes.object.isRequired
+        actions: PropTypes.object.isRequired,
+        game: PropTypes.object.isRequired
     };
 
     render() {
@@ -15,16 +18,16 @@ class App extends Component {
             <div>
                 <h1>Risk on maps</h1>
                 <Board />
+                <Info game={ this.props.game } />
+                   <DevTools />
             </div>
         );
     }
 }
 
 function mapStateToProps(state) {
-    console.log(state.toObject());
     return {
-        game: state.get('turn'),
-        phase: state.get('phase')
+        game: state.get('game')
     };
 }
 

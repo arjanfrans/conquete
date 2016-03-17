@@ -2,7 +2,7 @@ export default function logger(store) {
     return (next) => (action) => {
         let result;
 
-        console.group(action.name);
+        console.group('state change');
         console.info('dispatching', action);
 
         result = next(action);

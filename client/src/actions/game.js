@@ -2,8 +2,11 @@ export function changeTurn() {
     return dispatch => {
         setTimeout(() => {
             dispatch({
-                id: 0,
-                name: 'player1'
+                type: 'turn_change',
+                player: {
+                    id: 0,
+                    name: 'player1'
+                }
             });
         }, 200);
     }
