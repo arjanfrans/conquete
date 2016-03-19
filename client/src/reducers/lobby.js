@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { TYPES } from '../actions';
+import Types from '../actions/Types';
 
 const initialState = Immutable.fromJS({
     clients: [
@@ -22,9 +22,9 @@ const initialState = Immutable.fromJS({
 
 export default function lobby(state = initialState, action) {
     switch (action.type) {
-        case TYPES.ADD_CLIENT:
+        case Types.ADD_CLIENT:
             return state.update('clients', clients => clients.push(action.client));
-       case TYPES.ADD_ROOM:
+       case Types.ADD_ROOM:
             return state.update('rooms', rooms => rooms.push(action.room));
         default:
             return state

@@ -21,8 +21,8 @@ class App extends Component {
             return (
                 <Flash
                     key={ index }
-                    level={ error.level }
-                    message={ error.message }
+                    removeFlashAction={ this.props.actions.errors.removeFlash }
+                    { ...error }
                 />
             );
         });
@@ -52,7 +52,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(Actions, dispatch)
+        actions: {
+            errors: bindActionCreators(Actions.errors, dispatch),
+            game: bindActionCreators(Actions.game, dispatch),
+            lobby: bindActionCreators(Actions.lobby, dispatch)
+        }
     };
 }
 

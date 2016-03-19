@@ -1,15 +1,15 @@
-import { TYPES } from './';
+import Types from './Types';
 
 export function addClient(client) {
     return {
-        type: TYPES.ADD_CLIENT,
+        type: Types.ADD_CLIENT,
         client: client
     };
 }
 
 export function addRoom(room) {
     return {
-        type: 'add_room',
+        type: Types.ADD_ROOM,
         room: room
     };
 }

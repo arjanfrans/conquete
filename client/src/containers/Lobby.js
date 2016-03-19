@@ -22,13 +22,12 @@ class Lobby extends Component {
                 currentRoom: room
             });
         } else {
-            console.log(this.props.actions)
             this.props.actions.errors.pushFlash('error', 'Already in room.');
         }
     }
 
     render() {
-        const rooms = this.props.lobby.get('rooms').toJS();
+        const rooms = this.props.lobby.get('rooms').toList().toJS();
         const currentRoom = this.state.currentRoom ? <Room { ...this.state.currentRoom } /> : null;
 
         return (
