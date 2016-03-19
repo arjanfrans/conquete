@@ -1,25 +1,44 @@
 import React, { Component, PropTypes } from 'react';
+import RoomList from '../components/RoomList';
+import Room from '../components/Room';
 
 class Lobby extends Component {
     static propTypes = {
-        lobby: PropTypes.object.isRequired
+        lobby: PropTypes.object.isRequired,
+        actions: PropTypes.object.isRequired
     };
 
-    render() {
-        const clients = this.props.lobby.get('clients');
+    constructor(props) {
+        super(props);
 
-        const clientItems = [];
+        this.state = {
+            currentRoom: null
+        };
+    }
 
-        for (let [id, client] of clients) {
-            clientItems.push(<li key={ id }>{ id } - { client.name }</li>);
+    setCurrentRoom(room) {
+        if (!this.state.currentRoom) {
+            this.setState({
+                currentRoom: room
+            });
+        } else {
+            console.log(this.props.actions)
+            this.props.actions.errors.pushFlash('error', 'Already in room.');
         }
+    }
+
+    render() {
+        const rooms = this.props.lobby.get('rooms').toJS();
+        const currentRoom = this.state.currentRoom ? <Room { ...this.state.currentRoom } /> : null;
 
         return (
             <div>
                 <h2>Player lobby</h2>
-                <ul>
-                    { clientItems }
-                </ul>
+                <RoomList
+                    rooms={ rooms }
+                    onRoomClick={ ::this.setCurrentRoom }
+                />
+                { currentRoom }
             </div>
         );
     }

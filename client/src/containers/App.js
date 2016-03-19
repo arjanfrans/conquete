@@ -6,20 +6,36 @@ import DevTools from './DevTools';
 
 import Game from './Game';
 import Lobby from './Lobby';
+import Flash from '../components/Flash';
 
 class App extends Component {
     static PropTypes = {
         actions: PropTypes.object.isRequired,
         game: PropTypes.object.isRequired,
+        errors: PropTypes.object.isRequired,
         lobby: PropTypes.object.isRequired
     };
 
     render() {
+        const errors = this.props.errors.map((error, index) => {
+            return (
+                <Flash
+                    key={ index }
+                    level={ error.level }
+                    message={ error.message }
+                />
+            );
+        });
+
         return (
             <div>
                 <h1>Risk on maps</h1>
                 <Game game={ this.props.game } />
-                <Lobby lobby={ this.props.lobby } />
+                { errors.size > 0 ? errors : null }
+                <Lobby
+                    lobby={ this.props.lobby }
+                    actions={ this.props.actions }
+                />
                 <DevTools />
             </div>
         );
@@ -28,6 +44,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
     return {
+        errors: state.get('errors'),
         game: state.get('game'),
         lobby: state.get('lobby')
     };
