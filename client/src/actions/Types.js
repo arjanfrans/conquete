@@ -5,5 +5,3 @@ export default {
     REMOVE_FLASH: 'remove_flash',
     TURN_CHANGE: 'turn_change'
 };
-
-

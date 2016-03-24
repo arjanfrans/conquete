@@ -7,7 +7,7 @@ class RoomList extends Component {
     };
 
     render() {
-        let rooms = this.props.rooms.map(room => {
+        const rooms = this.props.rooms.map(room => {
             return (
                 <li key={ room.id } >
                     <a onClick={ this.props.onRoomClick.bind(this, room) }>

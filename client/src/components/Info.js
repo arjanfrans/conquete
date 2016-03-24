@@ -7,7 +7,7 @@ class Info extends Component {
     };
 
     render() {
-        let turn = this.props.game.get('turn');
+        let turn = this.props.game.turn;
 
         return (
             <div>

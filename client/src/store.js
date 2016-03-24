@@ -1,11 +1,11 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistState } from 'redux-devtools';
 import thunk from 'redux-thunk';
-import Immutable from 'immutable';
-import logger from './middleware/logger';
+// import logger from './middleware/logger';
 import rootReducer from './reducers';
 
 import DevTools from './containers/DevTools';
+import { createSocketMiddleware } from './middleware/socket';
 
 const enhancer = compose(
     DevTools.instrument(),
@@ -14,8 +14,12 @@ const enhancer = compose(
     )
 );
 
-const state = Immutable.Map({});
+export function configureStore(socketOptions) {
+    const socket = socketOptions.socket;
+    const socketActionTypes = socketOptions.socketActionTypes;
+    const socketMiddleware = createSocketMiddleware(socket, socketActionTypes);
+    const initialState = {};
+    const store = applyMiddleware(thunk, socketMiddleware)(createStore)(rootReducer, initialState, enhancer);
 
-const store = applyMiddleware(thunk, logger)(createStore)(rootReducer, state, enhancer);
-
-export default store;
+    return store;
+}

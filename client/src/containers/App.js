@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Actions from '../actions';
 import DevTools from './DevTools';
+import nestedActionCreators from '../utils/nestedActionCreators';
 
 import Game from './Game';
 import Lobby from './Lobby';
@@ -44,19 +45,15 @@ class App extends Component {
 
 function mapStateToProps(state) {
     return {
-        errors: state.get('errors'),
-        game: state.get('game'),
-        lobby: state.get('lobby')
+        errors: state.errors,
+        game: state.game,
+        lobby: state.lobby
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: {
-            errors: bindActionCreators(Actions.errors, dispatch),
-            game: bindActionCreators(Actions.game, dispatch),
-            lobby: bindActionCreators(Actions.lobby, dispatch)
-        }
+        actions: nestedActionCreators(Actions, dispatch)
     };
 }
 

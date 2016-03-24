@@ -1,18 +1,22 @@
-import Immutable from 'immutable';
 import Types from '../actions/Types';
 
-const initialState = Immutable.Map();
+const initialState = [];
 
 export default function game(state = initialState, action) {
     switch (action.type) {
         case Types.PUSH_FLASH:
-            return state.set(action.id, {
-                id: action.id,
-                level: action.level,
-                message: action.message
-            });
+            return [
+                ...state,
+                {
+                    [action.id]: {
+                        id: action.id,
+                        level: action.level,
+                        message: action.message
+                    }
+                }
+            ];
         case Types.REMOVE_FLASH:
-            return state.delete(action.id);
+            return state.filter(flash => flash.id !== action.id);
         default:
             return state
     }
