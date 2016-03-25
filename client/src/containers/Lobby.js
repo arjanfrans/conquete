@@ -39,10 +39,8 @@ class Lobby extends Component {
         });
     }
 
-    onCreateRoomSubmit(data) {
-        this.props.actions.lobby.addRoom({
-            ...data
-        });
+    handleCreateRoom(data) {
+        this.props.actions.server.createRoom(data);
 
         this.setState({ showCreateRoom: false });
     }
@@ -54,7 +52,7 @@ class Lobby extends Component {
         let createRoomForm = null;
 
         if (this.state.showCreateRoom) {
-            createRoomForm = <CreateRoomForm onSubmit={ ::this.onCreateRoomSubmit } />;
+            createRoomForm = <CreateRoomForm onSubmit={ ::this.handleCreateRoom } />;
         }
 
         const registrationForm = !isLoggedIn ? <RegistrationForm onSubmit={ ::this.handleRegistration } /> : null;

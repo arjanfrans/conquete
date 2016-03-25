@@ -10,13 +10,13 @@ const initialState = {
         {
             id: '1',
             name: 'room1',
-            players: 3,
+            maxPlayers: 3,
             clients: []
         },
         {
             id: '2',
             name: 'room2',
-            players: 4,
+            maxPlayers: 4,
             clients: []
         }
 

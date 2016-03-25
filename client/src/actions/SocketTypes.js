@@ -1,5 +1,6 @@
 const types = {
     REGISTER: 'register',
+    CREATE_ROOM: 'create_room'
 };
 
 Object.keys(types).forEach(typeKey => {

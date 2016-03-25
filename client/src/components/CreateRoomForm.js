@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 
-export const fields = ['name', 'id', 'players'];
+export const fields = ['name', 'id', 'maxPlayers'];
 
 class CreateRoomForm extends Component {
     static propTypes = {
@@ -12,7 +12,7 @@ class CreateRoomForm extends Component {
     };
 
     render() {
-        const { fields: { name, players, id }, handleSubmit } = this.props;
+        const { fields: { name, maxPlayers, id }, handleSubmit } = this.props;
         const playerOptions = ['3', '4', '5', '6'];
 
         return (
@@ -27,7 +27,7 @@ class CreateRoomForm extends Component {
                 </div>
                 <div>
                     <label>Players</label>
-                    <select { ...players } >
+                    <select { ...maxPlayers } >
                         { playerOptions.map(playerOption => {
                             return (
                                 <option

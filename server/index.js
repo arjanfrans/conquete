@@ -35,13 +35,18 @@ io.on('connection', socket => {
 
     socket.on('create', data => {
         try {
-            let room = new Room(data.name, client, io);
+            let room = new Room(data.name, data.maxPlayers, client, io);
 
             rooms.set(room.name, room);
 
             client.inRoom = room;
 
             debug('room created', client.id, room.toJSON());
+
+            socket.emit('created_room', {
+                room: room.toJSON()
+            });
+
         } catch (err) {
             error(socket, {
                 error: 'error creating room'
