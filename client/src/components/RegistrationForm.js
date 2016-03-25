@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 
 export const fields = ['name'];
 
-class RegistrationForm {
+class RegistrationForm extends Component {
     static propTypes = {
         fields: PropTypes.object.isRequired,
         handleSubmit: PropTypes.func.isRequired,
@@ -12,7 +12,7 @@ class RegistrationForm {
     };
 
     render() {
-        const { name } = this.props;
+        const { fields: { name }, handleSubmit } = this.props;
 
         return (
             <form onSubmit={ handleSubmit }>

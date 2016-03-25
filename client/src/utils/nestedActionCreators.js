@@ -5,8 +5,8 @@ export default function nestedActionCreators(actions, dispatch) {
 
     traverse(actionsCopy).forEach(function (value) {
         if (this.isLeaf && typeof value === 'function') {
-            this.update(function () {
-                return dispatch(value());
+            this.update(function (...args) {
+                return dispatch(value(...args));
             });
         }
     });

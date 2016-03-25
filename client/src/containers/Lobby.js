@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import RoomList from '../components/RoomList';
 import Room from '../components/Room';
 import CreateRoomForm from '../components/CreateRoomForm';
+import RegistrationForm from '../components/RegistrationForm';
 
 class Lobby extends Component {
     static propTypes = {
@@ -16,6 +17,10 @@ class Lobby extends Component {
             currentRoom: null,
             showCreateRoom: false
         };
+    }
+
+    handleRegistration(data) {
+        this.props.actions.server.register('sdasd' + data.name);
     }
 
     setCurrentRoom(room) {
@@ -43,7 +48,7 @@ class Lobby extends Component {
     }
 
     render() {
-        const rooms = this.props.lobby.rooms;
+        const { isLoggedIn, rooms } = this.props.lobby;
         const currentRoom = this.state.currentRoom ? <Room { ...this.state.currentRoom } /> : null;
 
         let createRoomForm = null;
@@ -51,6 +56,8 @@ class Lobby extends Component {
         if (this.state.showCreateRoom) {
             createRoomForm = <CreateRoomForm onSubmit={ ::this.onCreateRoomSubmit } />;
         }
+
+        const registrationForm = !isLoggedIn ? <RegistrationForm onSubmit={ ::this.handleRegistration } /> : null;
 
         return (
             <div>
@@ -63,6 +70,7 @@ class Lobby extends Component {
                     rooms={ rooms }
                     onRoomClick={ ::this.setCurrentRoom }
                 />
+                { registrationForm }
                 { currentRoom }
             </div>
         );

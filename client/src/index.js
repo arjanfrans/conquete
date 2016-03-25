@@ -12,7 +12,7 @@ import SocketDispatcher from './socket-dispatcher';
 import SocketIO from 'socket.io-client';
 import SocketTypes from './actions/SocketTypes';
 
-const socket = SocketIO('http://localhost:3000');
+const socket = SocketIO('http://localhost:8080');
 const store = configureStore({
     socket: socket,
     socketActionTypes: SocketTypes

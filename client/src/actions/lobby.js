@@ -13,3 +13,11 @@ export function addRoom(room) {
         room: room
     };
 }
+
+export function register(data) {
+    return {
+        type: Types.REGISTER,
+        id: data.id,
+        name: data.name
+    };
+}

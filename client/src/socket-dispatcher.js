@@ -1,5 +1,10 @@
 export default function SocketDispatcher(socket, actions) {
+    const { lobby } = actions;
+
     socket.on('connect', () => {
-        console.log('connected');
-    })
+    });
+
+    socket.on('ready', data => {
+        lobby.register(data);
+    });
 }

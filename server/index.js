@@ -2,7 +2,7 @@
 
 const debug = require('debug')('risk/server:index');
 const SocketServer = require('socket.io');
-const PORT = 3000;
+const PORT = 8080;
 const io = new SocketServer();
 const Room = require('./Room');
 

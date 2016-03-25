@@ -6,5 +6,6 @@ import * as server from './server';
 export default {
     game,
     lobby,
-    errors
+    errors,
+    server
 };

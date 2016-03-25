@@ -7,7 +7,7 @@ export default function logger(store) {
 
         result = next(action);
 
-        console.log('next state', store.getState().toJS());
+        console.log('next state', store);
         console.groupEnd(action.name);
 
         return result;

@@ -1,6 +1,8 @@
 import Types from '../actions/Types';
 
 const initialState = {
+    me: null,
+    isLoggedIn: false,
     clients: [
         { id: '234', name: 'yoo' }
     ],
@@ -23,6 +25,14 @@ const initialState = {
 
 export default function lobby(state = initialState, action) {
     switch (action.type) {
+        case Types.REGISTER:
+            return Object.assign({}, state, {
+                isLoggedIn: true,
+                me: {
+                    id: action.id,
+                    name: action.name
+                }
+            });
         case Types.ADD_CLIENT:
             return Object.assign({}, state, {
                 clients: [
