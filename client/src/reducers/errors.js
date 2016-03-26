@@ -8,11 +8,9 @@ export default function game(state = initialState, action) {
             return [
                 ...state,
                 {
-                    [action.id]: {
-                        id: action.id,
-                        level: action.level,
-                        message: action.message
-                    }
+                    id: action.id,
+                    level: action.level,
+                    message: action.message
                 }
             ];
         case Types.REMOVE_FLASH:

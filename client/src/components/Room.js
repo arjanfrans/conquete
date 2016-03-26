@@ -8,9 +8,9 @@ class Room extends Component {
     };
 
     render() {
-        const clients = this.props.clients.map(client => {
+        const clients = this.props.clients.map((client, index) => {
             return (
-                <li key={ client.id } >
+                <li key={ index } >
                     { client.name }
                 </li>
             );

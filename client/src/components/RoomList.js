@@ -7,9 +7,9 @@ class RoomList extends Component {
     };
 
     render() {
-        const rooms = this.props.rooms.map(room => {
+        const rooms = this.props.rooms.map((room, index) => {
             return (
-                <li key={ room.id } >
+                <li key={ index } >
                     <a onClick={ this.props.onRoomClick.bind(this, room) }>
                         { room.name }
                     </a>

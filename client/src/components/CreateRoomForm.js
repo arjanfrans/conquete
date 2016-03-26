@@ -22,10 +22,6 @@ class CreateRoomForm extends Component {
                     <input type="text" { ...name }/>
                 </div>
                 <div>
-                    <label>id name</label>
-                    <input type="text" { ...id }/>
-                </div>
-                <div>
                     <label>Players</label>
                     <select { ...maxPlayers } >
                         { playerOptions.map(playerOption => {

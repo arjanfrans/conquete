@@ -19,10 +19,10 @@ export function addRoom(room) {
     };
 }
 
-export function register(data) {
+export function register(client) {
     return {
         type: Types.REGISTER,
-        id: data.id,
-        name: data.name
+        id: client.id,
+        name: client.name
     };
 }

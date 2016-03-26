@@ -5,6 +5,7 @@ const SocketServer = require('socket.io');
 const PORT = 8080;
 const io = new SocketServer();
 const Room = require('./Room');
+const uuid = require('node-uuid');
 
 const clients = new Map();
 const rooms = new Map();
@@ -20,7 +21,7 @@ io.on('connection', socket => {
 
     socket.on('register', data => {
         client = {
-            id: socket.id,
+            id: uuid.v1(),
             name: data.name,
             socket: socket,
             inRoom: null
@@ -28,7 +29,13 @@ io.on('connection', socket => {
 
         clients.set(socket.id, client);
 
-        socket.emit('ready', {});
+        socket.emit('ready', {
+            client: {
+                id: client.id,
+                name: client.name
+            },
+            rooms: Array.from(rooms.values()).map(room => room.toJSON())
+        });
 
         debug('client registered', client.name)
     });
@@ -81,6 +88,12 @@ io.on('connection', socket => {
     socket.on('leave', data => {
         if (client.inRoom) {
             debug('client leaving room', client);
+
+            // If owner, remove the room
+            if (client.inRoom.owner === client) {
+                rooms.delete(client.inRoom.name);
+            }
+
             client.inRoom.leave(client);
             client.inRoom = null;
         } else {

@@ -20,4 +20,3 @@ export function pushFlash(level, message) {
 
     return flash;
 }
-

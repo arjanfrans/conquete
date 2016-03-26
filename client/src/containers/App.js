@@ -31,8 +31,8 @@ class App extends Component {
         return (
             <div>
                 <h1>Risk on maps</h1>
-                <Game game={ this.props.game } />
-                { errors.size > 0 ? errors : null }
+                 { /* <Game game={ this.props.game } */ }
+                { errors.length > 0 ? errors : null }
                 <Lobby
                     lobby={ this.props.lobby }
                     actions={ this.props.actions }

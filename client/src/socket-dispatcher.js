@@ -5,11 +5,14 @@ export default function SocketDispatcher(socket, actions) {
     });
 
     socket.on('ready', data => {
-        lobby.register(data);
+        lobby.register(data.client);
+
+        for (let room of data.rooms) {
+            lobby.addRoom(room);
+        }
     });
 
     socket.on('created_room', data => {
-        console.log(data);
         lobby.addRoom(data.room);
     })
 }

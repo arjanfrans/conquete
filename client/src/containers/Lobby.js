@@ -40,7 +40,7 @@ class Lobby extends Component {
     }
 
     handleCreateRoom(data) {
-        this.props.actions.server.createRoom(data);
+        this.props.actions.server.createRoom(data.name, data.maxPlayers);
 
         this.setState({ showCreateRoom: false });
     }
@@ -57,19 +57,33 @@ class Lobby extends Component {
 
         const registrationForm = !isLoggedIn ? <RegistrationForm onSubmit={ ::this.handleRegistration } /> : null;
 
-        return (
-            <div>
-                <h2>Player lobby</h2>
+        let createRoomButton = null;
+        console.log(this.state)
+
+        if (!this.state.currentRoom) {
+            createRoomButton = (
                 <button onClick={ ::this.showCreateRoom } >
                     Create room
                 </button>
+            );
+        }
+
+        const lobby = (
+            <div>
+                <h2>Player lobby</h2>
+                { createRoomButton }
                 { createRoomForm }
                 <RoomList
                     rooms={ rooms }
                     onRoomClick={ ::this.setCurrentRoom }
                 />
-                { registrationForm }
                 { currentRoom }
+            </div>
+        );
+
+        return (
+            <div>
+                { isLoggedIn ? lobby : registrationForm }
             </div>
         );
     }
