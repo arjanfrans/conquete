@@ -14,5 +14,9 @@ export default function SocketDispatcher(socket, actions) {
 
     socket.on('created_room', data => {
         lobby.addRoom(data.room);
-    })
+
+        for (let client of data.room.clients) {
+            lobby.joinRoom(data.room.name, client);
+        }
+    });
 }

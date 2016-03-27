@@ -44,5 +44,8 @@ class CreateRoomForm extends Component {
 
 export default reduxForm({
     form: 'createRoom',
+    initialValues: {
+        maxPlayers: '3'
+    },
     fields
 })(CreateRoomForm);

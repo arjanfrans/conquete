@@ -3,6 +3,7 @@ import Types from '../actions/Types';
 const initialState = {
     me: null,
     isLoggedIn: false,
+    currentRoom: null,
     clients: [
         { id: '234', name: 'yoo' }
     ],
@@ -40,12 +41,35 @@ export default function lobby(state = initialState, action) {
                     action.client
                 ]
             });
-       case Types.ADD_ROOM:
+        case Types.ADD_ROOM:
             return Object.assign({}, state, {
                 rooms: [
                     ...state.rooms,
                     action.room
                 ]
+            });
+        case Types.JOIN_ROOM:
+            let currentRoom = state.currentRoom;
+            const rooms = state.rooms.map(room => {
+                if (room.name === action.room.name) {
+                    if (!room.clients.includes(action.client.name)) {
+                        return Object.assign({}, room, {
+                            clients: [
+                                ...room.clients,
+                                action.client.name
+                            ]
+                        })
+                    }
+
+                    currentRoom = room;
+                }
+
+                return room;
+            });
+
+            return Object.assign({}, state, {
+                rooms: rooms,
+                currentRoom: currentRoom
             });
         default:
             return state

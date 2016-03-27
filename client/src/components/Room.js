@@ -11,7 +11,7 @@ class Room extends Component {
         const clients = this.props.clients.map((client, index) => {
             return (
                 <li key={ index } >
-                    { client.name }
+                    { client }
                 </li>
             );
         });

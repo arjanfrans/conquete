@@ -78,6 +78,14 @@ io.on('connection', socket => {
             room.join(client);
 
             debug('client joined room', room.name, client.id);
+
+            socket.emit('joined_room', {
+                room: room.toJSON(),
+                client: {
+                    id: client.id,
+                    name: client.name
+                }
+            })
         } catch (err) {
             error(socket, { error: 'error joining room' });
 

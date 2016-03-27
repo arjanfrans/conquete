@@ -14,7 +14,6 @@ class Lobby extends Component {
         super(props);
 
         this.state = {
-            currentRoom: null,
             showCreateRoom: false
         };
     }
@@ -23,11 +22,9 @@ class Lobby extends Component {
         this.props.actions.server.register('sdasd' + data.name);
     }
 
-    setCurrentRoom(room) {
+    handleJoinRoom(room) {
         if (!this.state.currentRoom) {
-            this.setState({
-                currentRoom: room
-            });
+            this.props.actions.server.joinRoom(room.name);
         } else {
             this.props.actions.errors.pushFlash('error', 'Already in room.');
         }
@@ -47,7 +44,7 @@ class Lobby extends Component {
 
     render() {
         const { isLoggedIn, rooms } = this.props.lobby;
-        const currentRoom = this.state.currentRoom ? <Room { ...this.state.currentRoom } /> : null;
+        const currentRoom = this.props.lobby.currentRoom ? <Room { ...this.props.lobby.currentRoom } /> : null;
 
         let createRoomForm = null;
 
@@ -58,7 +55,6 @@ class Lobby extends Component {
         const registrationForm = !isLoggedIn ? <RegistrationForm onSubmit={ ::this.handleRegistration } /> : null;
 
         let createRoomButton = null;
-        console.log(this.state)
 
         if (!this.state.currentRoom) {
             createRoomButton = (
@@ -75,7 +71,7 @@ class Lobby extends Component {
                 { createRoomForm }
                 <RoomList
                     rooms={ rooms }
-                    onRoomClick={ ::this.setCurrentRoom }
+                    onRoomClick={ ::this.handleJoinRoom }
                 />
                 { currentRoom }
             </div>
