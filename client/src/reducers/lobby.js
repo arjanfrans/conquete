@@ -7,21 +7,7 @@ const initialState = {
     clients: [
         { id: '234', name: 'yoo' }
     ],
-    rooms: [
-        {
-            id: '1',
-            name: 'room1',
-            maxPlayers: 3,
-            clients: []
-        },
-        {
-            id: '2',
-            name: 'room2',
-            maxPlayers: 4,
-            clients: []
-        }
-
-    ]
+    rooms: []
 };
 
 export default function lobby(state = initialState, action) {
@@ -51,8 +37,11 @@ export default function lobby(state = initialState, action) {
         case Types.JOIN_ROOM:
             let currentRoom = state.currentRoom;
             const rooms = state.rooms.map(room => {
+                console.log(room, action)
                 if (room.name === action.room.name) {
                     if (!room.clients.includes(action.client.name)) {
+                        currentRoom = room;
+
                         return Object.assign({}, room, {
                             clients: [
                                 ...room.clients,
@@ -60,8 +49,6 @@ export default function lobby(state = initialState, action) {
                             ]
                         })
                     }
-
-                    currentRoom = room;
                 }
 
                 return room;

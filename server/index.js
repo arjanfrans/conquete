@@ -40,7 +40,7 @@ io.on('connection', socket => {
         debug('client registered', client.name)
     });
 
-    socket.on('create', data => {
+    socket.on('create_room', data => {
         try {
             let room = new Room(data.name, data.maxPlayers, client, io);
 
@@ -71,7 +71,7 @@ io.on('connection', socket => {
         }
     });
 
-    socket.on('join', data => {
+    socket.on('join_room', data => {
         try {
             let room = rooms.get(data.name);
 

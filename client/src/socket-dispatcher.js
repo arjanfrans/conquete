@@ -19,4 +19,8 @@ export default function SocketDispatcher(socket, actions) {
             lobby.joinRoom(data.room.name, client);
         }
     });
+
+    socket.on('joined_room', data => {
+        lobby.joinRoom(data.room.name, data.client.name);
+    });
 }

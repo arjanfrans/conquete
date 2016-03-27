@@ -23,7 +23,7 @@ class Lobby extends Component {
     }
 
     handleJoinRoom(room) {
-        if (!this.state.currentRoom) {
+        if (!this.props.lobby.currentRoom) {
             this.props.actions.server.joinRoom(room.name);
         } else {
             this.props.actions.errors.pushFlash('error', 'Already in room.');
@@ -44,6 +44,7 @@ class Lobby extends Component {
 
     render() {
         const { isLoggedIn, rooms } = this.props.lobby;
+        console.log(this.props)
         const currentRoom = this.props.lobby.currentRoom ? <Room { ...this.props.lobby.currentRoom } /> : null;
 
         let createRoomForm = null;
@@ -56,7 +57,7 @@ class Lobby extends Component {
 
         let createRoomButton = null;
 
-        if (!this.state.currentRoom) {
+        if (!this.props.lobby.currentRoom) {
             createRoomButton = (
                 <button onClick={ ::this.showCreateRoom } >
                     Create room

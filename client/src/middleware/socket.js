@@ -8,9 +8,13 @@ export function createSocketMiddleware(socket, socketActionTypes) {
             });
 
             if (types.includes(action.type)) {
-                const eventName = action.type.split('_')[1];
+                const splitType = action.type.split('_');
 
-                socket.emit(eventName, action.data);
+                splitType.shift();
+
+                const eventName = splitType.join('_');
+
+t               socket.emit(eventName, action.data);
             }
 
             return next(action);

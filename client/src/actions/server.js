@@ -13,7 +13,9 @@ export function createRoom(name, maxPlayers) {
 export function joinRoom(roomName) {
     return {
         type: Types.JOIN_ROOM,
-        name: roomName
+        data: {
+            name: roomName
+        }
     };
 }
 
