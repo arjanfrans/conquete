@@ -79,7 +79,7 @@ io.on('connection', socket => {
 
             debug('client joined room', room.name, client.id);
 
-            socket.emit('joined_room', {
+            io.sockets.emit('joined_room', {
                 room: room.toJSON(),
                 client: {
                     id: client.id,

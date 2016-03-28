@@ -37,18 +37,17 @@ export default function lobby(state = initialState, action) {
         case Types.JOIN_ROOM:
             let currentRoom = state.currentRoom;
             const rooms = state.rooms.map(room => {
-                console.log(room, action)
                 if (room.name === action.room.name) {
-                    if (!room.clients.includes(action.client.name)) {
-                        currentRoom = room;
+                    let newRoom = Object.assign({}, room, {
+                        clients: [
+                            ...room.clients,
+                            action.client
+                        ]
+                    });
 
-                        return Object.assign({}, room, {
-                            clients: [
-                                ...room.clients,
-                                action.client.name
-                            ]
-                        })
-                    }
+                    currentRoom = newRoom;
+
+                    return newRoom;
                 }
 
                 return room;

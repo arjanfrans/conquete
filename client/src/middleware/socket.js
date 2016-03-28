@@ -14,7 +14,7 @@ export function createSocketMiddleware(socket, socketActionTypes) {
 
                 const eventName = splitType.join('_');
 
-t               socket.emit(eventName, action.data);
+                socket.emit(eventName, action.data);
             }
 
             return next(action);

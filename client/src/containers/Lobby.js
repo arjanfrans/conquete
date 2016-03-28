@@ -19,7 +19,7 @@ class Lobby extends Component {
     }
 
     handleRegistration(data) {
-        this.props.actions.server.register('sdasd' + data.name);
+        this.props.actions.server.register(data.name);
     }
 
     handleJoinRoom(room) {
@@ -44,7 +44,6 @@ class Lobby extends Component {
 
     render() {
         const { isLoggedIn, rooms } = this.props.lobby;
-        console.log(this.props)
         const currentRoom = this.props.lobby.currentRoom ? <Room { ...this.props.lobby.currentRoom } /> : null;
 
         let createRoomForm = null;
