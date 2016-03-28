@@ -23,4 +23,8 @@ export default function SocketDispatcher(socket, actions) {
     socket.on('joined_room', data => {
         lobby.joinRoom(data.room.name, data.client.name);
     });
+
+    socket.on('left_room', data => {
+        lobby.leaveRoom(data.room.name, data.client.name);
+    })
 }

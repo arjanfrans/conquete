@@ -93,16 +93,25 @@ io.on('connection', socket => {
         }
     });
 
-    socket.on('leave', data => {
+    socket.on('leave_room', data => {
         if (client.inRoom) {
-            debug('client leaving room', client);
+            debug('client leaving room', client.id);
 
             // If owner, remove the room
             if (client.inRoom.owner === client) {
                 rooms.delete(client.inRoom.name);
             }
 
-            client.inRoom.leave(client);
+            client.inRoom.leave(client.id);
+
+            io.sockets.emit('left_room', {
+                room: client.inRoom.toJSON(),
+                client: {
+                    id: client.id,
+                    name: client.name
+                }
+            });
+
             client.inRoom = null;
         } else {
             error(socket, {

@@ -57,7 +57,7 @@ class Room {
     }
 
     leave (client) {
-        this.clients.remove(client);
+        this.clients.delete(client.id);
     }
 
     emit (eventName, ...data) {

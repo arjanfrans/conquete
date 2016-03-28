@@ -42,6 +42,10 @@ class Lobby extends Component {
         this.setState({ showCreateRoom: false });
     }
 
+    handleLeaveRoom() {
+        this.props.actions.server.leaveRoom();
+    }
+
     render() {
         const { isLoggedIn, rooms } = this.props.lobby;
         const currentRoom = this.props.lobby.currentRoom ? <Room { ...this.props.lobby.currentRoom } /> : null;
@@ -55,11 +59,18 @@ class Lobby extends Component {
         const registrationForm = !isLoggedIn ? <RegistrationForm onSubmit={ ::this.handleRegistration } /> : null;
 
         let createRoomButton = null;
+        let leaveRoomButton = null;
 
         if (!this.props.lobby.currentRoom) {
             createRoomButton = (
                 <button onClick={ ::this.showCreateRoom } >
                     Create room
+                </button>
+            );
+        } else {
+            leaveRoomButton = (
+                <button onClick={ ::this.handleLeaveRoom } >
+                    Leave room
                 </button>
             );
         }
@@ -69,6 +80,7 @@ class Lobby extends Component {
                 <h2>Player lobby</h2>
                 { createRoomButton }
                 { createRoomForm }
+                { leaveRoomButton }
                 <RoomList
                     rooms={ rooms }
                     onRoomClick={ ::this.handleJoinRoom }

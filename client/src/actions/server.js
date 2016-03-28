@@ -19,6 +19,13 @@ export function joinRoom(roomName) {
     };
 }
 
+export function leaveRoom() {
+    return {
+        type: Types.LEAVE_ROOM,
+        data: {}
+    };
+}
+
 export function register(name) {
     return {
         type: Types.REGISTER,

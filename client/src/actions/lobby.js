@@ -17,6 +17,16 @@ export function joinRoom(roomName, client) {
     };
 }
 
+export function leaveRoom(roomName, client) {
+    return {
+        type: Types.LEAVE_ROOM,
+        room: {
+            name: roomName
+        },
+        client: client
+    };
+}
+
 export function addRoom(room) {
     return {
         type: Types.ADD_ROOM,

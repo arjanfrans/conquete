@@ -34,29 +34,46 @@ export default function lobby(state = initialState, action) {
                     action.room
                 ]
             });
-        case Types.JOIN_ROOM:
+        case Types.JOIN_ROOM: {
             let currentRoom = state.currentRoom;
+
             const rooms = state.rooms.map(room => {
-                if (room.name === action.room.name) {
-                    let newRoom = Object.assign({}, room, {
-                        clients: [
-                            ...room.clients,
-                            action.client
-                        ]
-                    });
+                let client = room.clients.indexOf(action.client);
+                let clients = room.clients.slice();
+
+                let newRoom = Object.assign({}, room, {
+                    clients: clients
+                });
+
+                if (client === -1) {
+                    clients.push(action.client);
 
                     currentRoom = newRoom;
-
-                    return newRoom;
                 }
 
-                return room;
+                return newRoom;
             });
 
             return Object.assign({}, state, {
                 rooms: rooms,
                 currentRoom: currentRoom
             });
+        }
+        case Types.LEAVE_ROOM: {
+            const rooms = state.rooms.filter(room => {
+                console.log(room)
+                if (room.name === action.room.name) {
+                    return false;
+                }
+
+                return true;
+            });
+
+            return Object.assign({}, state, {
+                rooms: rooms,
+                currentRoom: action.room.name === state.currentRoom.name ? null : state.currentRoom
+            });
+        }
         default:
             return state
     }
