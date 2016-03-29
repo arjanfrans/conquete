@@ -41,17 +41,17 @@ export default function lobby(state = initialState, action) {
                 let client = room.clients.indexOf(action.client);
                 let clients = room.clients.slice();
 
-                let newRoom = Object.assign({}, room, {
-                    clients: clients
-                });
-
-                if (client === -1) {
+                if (room.name === action.room.name && !room.clients.includes(action.client)) {
                     clients.push(action.client);
-
-                    currentRoom = newRoom;
                 }
 
-                return newRoom;
+                if (room.name === action.room.name) {
+                    currentRoom = room;
+                }
+
+                return Object.assign({}, room, {
+                    clients: clients
+                });
             });
 
             return Object.assign({}, state, {

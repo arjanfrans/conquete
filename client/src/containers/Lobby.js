@@ -48,6 +48,7 @@ class Lobby extends Component {
 
     render() {
         const { isLoggedIn, rooms } = this.props.lobby;
+        console.log(this.props.lobby.currentRoom)
         const currentRoom = this.props.lobby.currentRoom ? <Room { ...this.props.lobby.currentRoom } /> : null;
 
         let createRoomForm = null;
