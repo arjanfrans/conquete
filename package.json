@@ -1,22 +1,30 @@
 {
-  "name": "node-risk",
+  "name": "conquete",
   "version": "0.0.1",
   "description": "Logic for the risk board game",
-  "main": "index.js",
+  "main": "./lib/risk/index.js",
   "scripts": {
     "cli": "node --es_staging ./lib/cli/start.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --check-leaks --recursive",
+    "cover": "istanbul --include-all-sources cover --root lib _mocha -R --spec -- --recursive",
+    "ci": "npm run cover"
   },
   "author": "Arjan Frans <arjanfrans.com@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arjanfrans/node-risk"
+  },
   "dependencies": {
-    "chalk": "^1.1.1",
     "co": "^4.6.0",
     "debug": "^2.2.0",
-    "jsonschema": "^1.1.0",
-    "minimist": "^1.2.0",
-    "node-uuid": "^1.4.7",
-    "socket.io": "^1.4.5"
+    "jsonschema": "^1.1.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+      "chai": "^3.5.0",
+      "coveralls": "^2.11.9",
+      "istanbul": "^0.4.2",
+      "mocha": "^2.4.5",
+      "mocha-lcov-reporter": "^1.2.0"
+  }
 }

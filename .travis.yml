@@ -1,0 +1,23 @@
+language: node_js
+
+node_js:
+    - "4.2"
+    - "node"
+
+cache:
+    directories:
+        - node_modules
+
+script: "npm run ci"
+
+addons:
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+        packages:
+            - gcc-4.8
+            - g++-4.8
+env:
+    - CXX=g++-4.8
+
+after_script: "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
