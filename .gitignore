@@ -20,6 +20,8 @@ coverage
 # node-waf configuration
 .lock-wscript
 
+.nyc_output
+
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
