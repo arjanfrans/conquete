@@ -1,6 +1,6 @@
 {
   "name": "conquete",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Logic for the risk board game",
   "main": "./lib/risk/index.js",
   "scripts": {
@@ -18,7 +18,10 @@
     "url": "https://github.com/arjanfrans/conquete"
   },
   "babel": {
-    "presets": ["es2015", "stage-2"],
+    "presets": [
+      "es2015",
+      "stage-2"
+    ],
     "ignore": "test"
   },
   "ava": {
