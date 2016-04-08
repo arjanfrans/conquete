@@ -1,7 +1,8 @@
 module.exports = {
     "env": {
         "es6": true,
-        "node": true
+        "node": true,
+        "mocha": true
     },
     "extends": "eslint:recommended",
     "rules": {
@@ -45,7 +46,7 @@ module.exports = {
         ],
         "complexity": [
             "warn",
-            3
+            7
         ],
         "computed-property-spacing": [
             "error",
@@ -147,7 +148,7 @@ module.exports = {
         "no-new-require": "error",
         "no-new-wrappers": "error",
         "no-octal-escape": "error",
-        "no-param-reassign": "error",
+        "no-param-reassign": "off",
         "no-path-concat": "error",
         "no-plusplus": [
             "error",
@@ -202,7 +203,7 @@ module.exports = {
             "always"
         ],
         "operator-linebreak": "off",
-        "padded-blocks": "off",
+        "padded-blocks": ["error", "never"],
         "prefer-arrow-callback": "off",
         "prefer-const": "error",
         "prefer-reflect": "off",
