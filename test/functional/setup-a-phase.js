@@ -61,16 +61,22 @@ describe('setup_a phase', function () {
             game.act.claimTerritory(data.playerId, data.territoryIds[0]);
         });
 
+        playerListener.on(risk.PLAYER_EVENTS.REQUIRE_ONE_UNIT_DEPLOY, data => {
+            playerEvents.REQUIRE_ONE_UNIT_DEPLOY.push(data);
+        });
+
         game.start();
     });
 
-    it('REQUIRE_TERRITORY_CLAIM player events are emitted to correct players', function () {
+    it('REQUIRE_TERRITORY_CLAIM is emitted and turn is changed correctly', function () {
         const numberOfTerritories = game.board.getTerritories().length;
 
         let playerCount = 0;
+        let availableTerritoryCount = numberOfTerritories;
 
         for (let i = 0; i < playerEvents.REQUIRE_TERRITORY_CLAIM.length; i++) {
             const claim = playerEvents.REQUIRE_TERRITORY_CLAIM[i];
+            const turn = gameEvents.TURN_CHANGE[i];
 
             if (i % playerOrder.length === 0) {
                 playerCount = 0;
@@ -80,16 +86,29 @@ describe('setup_a phase', function () {
 
             const playerId = playerOrder[playerCount];
 
-            expect(claim.playerId).to.equal(playerId)
+            expect(claim.playerId).to.equal(playerId);
+            expect(turn.playerId).to.equal(playerId);
+
+            expect(claim.territoryIds).to.have.length(availableTerritoryCount)
+            expect(playerEvents.REQUIRE_TERRITORY_CLAIM[0].message).to.match(/^You must claim a territory. Available/);
+            availableTerritoryCount -= 1;
         }
 
-        // expect(playerEvents.REQUIRE_TERRITORY_CLAIM[0]).to.have.property('territoryIds');
-        // expect(playerEvents.REQUIRE_TERRITORY_CLAIM[0].territoryIds).to.be.an('array');
-        // expect(playerEvents.REQUIRE_TERRITORY_CLAIM[0]).to.have.property('message');
-        // expect(playerEvents.REQUIRE_TERRITORY_CLAIM[0].message).to.match(/^You must claim a territory. Available/);
-        // expect(playerEvents.REQUIRE_TERRITORY_CLAIM[0]).to.have.property('playerId');
-        // expect(playerEvents.REQUIRE_TERRITORY_CLAIM[0].playerId).to.equal(playerId);
-
         expect(playerEvents.REQUIRE_TERRITORY_CLAIM).to.have.length(numberOfTerritories);
+    });
+
+    it('PHASE_CHANGE is emitted after all territories are claimed', function () {
+        expect(gameEvents.PHASE_CHANGE).to.have.length(2);
+        expect(gameEvents.PHASE_CHANGE[0]).to.have.property('phase', 'setup_a');
+        expect(gameEvents.PHASE_CHANGE[0]).to.have.property('playerId', playerOrder[0]);
+        expect(gameEvents.PHASE_CHANGE[1]).to.have.property('phase', 'setup_b');
+        expect(gameEvents.PHASE_CHANGE[1]).to.have.property('playerId', playerOrder[0]);
+    });
+
+    it('REQUIRE_ONE_UNIT_DEPLOY is deploy when phase is changed to "setup_b"', function () {
+        expect(playerEvents.REQUIRE_ONE_UNIT_DEPLOY).to.have.length(1)
+        expect(playerEvents.REQUIRE_ONE_UNIT_DEPLOY[0]).to.have.property('playerId', playerOrder[0]);
+        expect(playerEvents.REQUIRE_ONE_UNIT_DEPLOY[0]).to.have.property('message', 'You must place 1 unit on one of your territories.');
+        expect(playerEvents.REQUIRE_ONE_UNIT_DEPLOY[0]).to.have.property('remainingUnits', 21);
     });
 });
