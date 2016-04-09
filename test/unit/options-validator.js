@@ -43,7 +43,7 @@ describe('options-validator', function () {
             ]
         });
 
-        const optionErrors = validateOptions(options)
+        const optionErrors = validateOptions(options);
 
         expect(optionErrors).to.deep.equal([
             'Property "players" does not meet minimum length of 3.',
