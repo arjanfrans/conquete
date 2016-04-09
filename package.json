@@ -5,9 +5,9 @@
   "main": "./lib/risk/index.js",
   "scripts": {
     "cli": "node --es_staging ./lib/cli/start.js",
-    "test": "ava --tap | tap-spec",
-    "test-watch": "ava --watch",
-    "cover": "nyc --reporter=lcov ava && nyc report",
+    "test": "mocha ./test --es_staging --recursive --check-leaks",
+    "test:watch": "npm test -- --watch",
+    "cover": "node --es_staging ./node_modules/istanbul/lib/cli.js --include-all-sources cover --root lib _mocha ./test -R --spec -- --recursive",
     "ci": "npm run cover",
     "lint": "eslint lib"
   },
@@ -17,31 +17,17 @@
     "type": "git",
     "url": "https://github.com/arjanfrans/conquete"
   },
-  "babel": {
-    "presets": [
-      "es2015",
-      "stage-2"
-    ],
-    "ignore": "test"
-  },
-  "ava": {
-    "require": [
-      "babel-polyfill",
-      "babel-register"
-    ]
-  },
   "dependencies": {
     "co": "^4.6.0",
     "debug": "^2.2.0",
     "jsonschema": "^1.1.0"
   },
   "devDependencies": {
-    "ava": "^0.14.0",
-    "babel-polyfill": "^6.7.4",
-    "babel-register": "^6.7.2",
+    "chai": "^3.5.0",
     "coveralls": "^2.11.9",
     "eslint": "^2.7.0",
-    "nyc": "^6.2.1",
-    "tap-spec": "^4.1.1"
+    "istanbul": "^0.4.3",
+    "mocha": "^2.4.5",
+    "mocha-lcov-reporter": "^1.2.0"
   }
 }
