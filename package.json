@@ -5,7 +5,7 @@
   "main": "./lib/risk/index.js",
   "scripts": {
     "cli": "node --es_staging ./lib/cli/start.js",
-    "test": "mocha ./test --es_staging --recursive --check-leaks",
+    "test": "mocha ./test --es_staging --recursive --check-leaks --colors",
     "test:watch": "npm test -- --watch",
     "cover": "node --es_staging ./node_modules/istanbul/lib/cli.js --include-all-sources cover --root lib _mocha ./test -R --spec -- --recursive",
     "ci": "npm run cover",

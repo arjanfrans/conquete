@@ -89,7 +89,7 @@ describe('setup_a phase', function () {
             expect(claim.playerId).to.equal(playerId);
             expect(turn.playerId).to.equal(playerId);
 
-            expect(claim.territoryIds).to.have.length(availableTerritoryCount)
+            expect(claim.territoryIds).to.have.length(availableTerritoryCount);
             expect(playerEvents.REQUIRE_TERRITORY_CLAIM[0].message).to.match(/^You must claim a territory. Available/);
             availableTerritoryCount -= 1;
         }
@@ -105,8 +105,8 @@ describe('setup_a phase', function () {
         expect(gameEvents.PHASE_CHANGE[1]).to.have.property('playerId', playerOrder[0]);
     });
 
-    it('REQUIRE_ONE_UNIT_DEPLOY is deploy when phase is changed to "setup_b"', function () {
-        expect(playerEvents.REQUIRE_ONE_UNIT_DEPLOY).to.have.length(1)
+    it('REQUIRE_ONE_UNIT_DEPLOY is emitted when phase is changed to "setup_b"', function () {
+        expect(playerEvents.REQUIRE_ONE_UNIT_DEPLOY).to.have.length(1);
         expect(playerEvents.REQUIRE_ONE_UNIT_DEPLOY[0]).to.have.property('playerId', playerOrder[0]);
         expect(playerEvents.REQUIRE_ONE_UNIT_DEPLOY[0]).to.have.property('message', 'You must place 1 unit on one of your territories.');
         expect(playerEvents.REQUIRE_ONE_UNIT_DEPLOY[0]).to.have.property('remainingUnits', 21);
