@@ -38,6 +38,10 @@ describe('setup_b phase', function () {
         return prev;
     }, {});
 
+    const deployErrors = [];
+    let placementData = null;
+    let placementTerritory = null;
+
     before(function () {
         gameListener.on(risk.GAME_EVENTS.GAME_START, data => {
             gameEvents.GAME_START.push(data);
@@ -51,10 +55,31 @@ describe('setup_b phase', function () {
             gameEvents.PHASE_CHANGE.push(data);
         });
 
+        gameListener.on(risk.GAME_EVENTS.TURN_PHASE_CHANGE, data => {
+            gameEvents.TURN_PHASE_CHANGE.push(data);
+        });
+
         playerListener.on(risk.PLAYER_EVENTS.REQUIRE_ONE_UNIT_DEPLOY, data => {
             playerEvents.REQUIRE_ONE_UNIT_DEPLOY.push(data);
 
             game.act.deployOneUnit(data.playerId, data.territoryIds[0]);
+        });
+
+        playerListener.on(risk.PLAYER_EVENTS.REQUIRE_PLACEMENT_ACTION, data => {
+            playerEvents.REQUIRE_PLACEMENT_ACTION.push(data);
+
+            try {
+                game.act.deployUnits(data.playerId, 'invalid_id', 4);
+            } catch (err) {
+                deployErrors.push(err);
+            }
+
+            const territory = data.territoryIds[0];
+
+            placementData = data;
+            placementTerritory = game.board.getTerritory(territory);
+            game.act.deployUnits(data.playerId, territory, data.units);
+            game.act.attackPhase(data.playerId);
         });
 
         game.start();
@@ -82,5 +107,23 @@ describe('setup_b phase', function () {
         for (const player of statePlayers) {
             expect(player).to.have.property('startUnits', 0);
         }
+    });
+
+    it('errors is thrown when deploying units to invalid territory', function () {
+        expect(deployErrors).to.have.length(1);
+        expect(deployErrors[0]).to.have.property('message', 'Territory "invalid_id" is invalid.');
+
+        const territory = game.board.getTerritory(placementTerritory.id);
+
+        expect(territory.id).to.equal(placementTerritory.id);
+        expect(territory.owner).to.equal(placementData.playerId);
+        expect(territory.units).to.equal(placementTerritory.units + placementData.units);
+    });
+
+    it('TURN_PHASE_CHANGE is emitted after switching to attack phase', function () {
+        expect(gameEvents.TURN_PHASE_CHANGE).to.have.length(1);
+        expect(gameEvents.TURN_PHASE_CHANGE[0]).to.have.property('playerId', placementData.playerId);
+        expect(gameEvents.TURN_PHASE_CHANGE[0]).to.have.property('phase', 'attacking');
+        expect(gameEvents.TURN_PHASE_CHANGE[0].message).to.match(/^The turn phase has changed to "attacking"/);
     });
 });
