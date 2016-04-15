@@ -4,6 +4,8 @@ const expect = require('chai').expect;
 const EventEmitter = require('events');
 const risk = require('../../lib/risk');
 const stateBattle = require('../states/battle');
+const Dice = require('../../lib/risk/utils/dice');
+const sinon = require('sinon');
 
 describe('battle phase', function () {
     const gameListener = new EventEmitter();
@@ -40,8 +42,15 @@ describe('battle phase', function () {
 
     let fromTerritory = null;
     let toTerritory = null;
+    let diceStub = null;
 
     before(function () {
+        let currentBattleTurn = null;
+
+        diceStub = sinon.stub(Dice, 'roll', function(numberOfDice) {
+            return [1, 1, 1];
+        });
+
         gameListener.on(risk.GAME_EVENTS.GAME_START, data => {
             gameEvents.GAME_START.push(data);
         });
@@ -78,6 +87,12 @@ describe('battle phase', function () {
 
         playerListener.on(risk.PLAYER_EVENTS.REQUIRE_DICE_ROLL, data => {
             playerEvents.REQUIRE_DICE_ROLL.push(data);
+
+            if (!currentBattleTurn) {
+                game.act.rollDice(data.playerId, data.maxDice);
+                currentBattleTurn = data.playerId;
+            }
+
         });
 
         game.start();
@@ -107,6 +122,13 @@ describe('battle phase', function () {
     it('an attack is initiated', function () {
         expect(gameEvents.ATTACK).to.have.length(1);
         expect(playerEvents.REQUIRE_DICE_ROLL).to.have.length(1);
-        // TODO
+        expect(playerEvents.REQUIRE_DICE_ROLL[0].maxDice).to.equal(Math.min(fromTerritory.units - 1, 3));
+        expect(playerEvents.REQUIRE_DICE_ROLL[0].type).to.equal('attacker');
+        expect(playerEvents.REQUIRE_DICE_ROLL[0].playerId).to.equal(stateBattle.previousTurnEvent.data.playerId);
+        expect(playerEvents.REQUIRE_DICE_ROLL[0].message).to.match(/^You have to roll dice. You are the attacker/);
+    });
+
+    after(function () {
+        diceStub.restore();
     });
 });
