@@ -45,10 +45,23 @@ describe('battle phase', function () {
     let diceStub = null;
 
     before(function () {
-        let currentBattleTurn = null;
+        let currentBattleType = null;
 
-        diceStub = sinon.stub(Dice, 'roll', function(numberOfDice) {
-            return [1, 1, 1];
+        // Let the attacker always win
+        diceStub = sinon.stub(Dice, 'roll', function (numberOfDice) {
+            const result = [];
+
+            if (currentBattleType === 'attacker') {
+                for (let i = 0; i < numberOfDice; i++) {
+                    result.push(6);
+                }
+            } else {
+                for (let i = 0; i < numberOfDice; i++) {
+                    result.push(1);
+                }
+            }
+
+            return result;
         });
 
         gameListener.on(risk.GAME_EVENTS.GAME_START, data => {
@@ -67,32 +80,49 @@ describe('battle phase', function () {
             gameEvents.ATTACK.push(data);
         });
 
+        gameListener.on(risk.GAME_EVENTS.ATTACK_DICE_ROLL, data => {
+            gameEvents.ATTACK_DICE_ROLL.push(data);
+        });
+
+        gameListener.on(risk.GAME_EVENTS.DEFEND_DICE_ROLL, data => {
+            gameEvents.DEFEND_DICE_ROLL.push(data);
+        });
+
+        gameListener.on(risk.GAME_EVENTS.BATTLE_END, data => {
+            gameEvents.BATTLE_END.push(data);
+        });
+
+        let firstBattle = null;
+
         playerListener.on(risk.PLAYER_EVENTS.REQUIRE_ATTACK_ACTION, data => {
             playerEvents.REQUIRE_ATTACK_ACTION.push(data);
 
-            const player = game.getPlayer(data.playerId);
+            if (!firstBattle) {
+                firstBattle = true;
 
-            while (!fromTerritory) {
-                const territory = game.board.getTerritory(player.territoryIds[0]);
-                const enemyAdjacent = game.board.getAdjacentTerritories(territory.id, false);
+                const player = game.getPlayer(data.playerId);
 
-                if (enemyAdjacent.length > 0 && territory.units > 1) {
-                    fromTerritory = territory;
-                    toTerritory = enemyAdjacent[0];
+                while (!fromTerritory) {
+                    const territory = game.board.getTerritory(player.territoryIds[0]);
+                    const enemyAdjacent = game.board.getAdjacentTerritories(territory.id, false);
+
+                    if (enemyAdjacent.length > 0 && territory.units > 1) {
+                        fromTerritory = territory;
+                        toTerritory = enemyAdjacent[0];
+                    }
                 }
-            }
 
-            game.act.attack(data.playerId, fromTerritory.id, toTerritory.id, fromTerritory.units - 1);
+                game.act.attack(data.playerId, fromTerritory.id, toTerritory.id, fromTerritory.units - 1);
+            } else {
+
+            }
         });
 
         playerListener.on(risk.PLAYER_EVENTS.REQUIRE_DICE_ROLL, data => {
             playerEvents.REQUIRE_DICE_ROLL.push(data);
 
-            if (!currentBattleTurn) {
-                game.act.rollDice(data.playerId, data.maxDice);
-                currentBattleTurn = data.playerId;
-            }
-
+            currentBattleType = data.type;
+            game.act.rollDice(data.playerId, data.maxDice);
         });
 
         game.start();
@@ -107,7 +137,7 @@ describe('battle phase', function () {
     });
 
     it('REQUIRE_ATTACK_ACTION is emitted', function () {
-        expect(playerEvents.REQUIRE_ATTACK_ACTION).to.have.length(1);
+        expect(playerEvents.REQUIRE_ATTACK_ACTION).to.have.length(2);
         expect(playerEvents.REQUIRE_ATTACK_ACTION[0]).to.have.property('playerId',
             stateBattle.previousTurnEvent.data.playerId);
         expect(playerEvents.REQUIRE_ATTACK_ACTION[0].message).to.match(/^You are in the attack phase/);
@@ -119,13 +149,43 @@ describe('battle phase', function () {
         expect(toTerritory.owner).to.not.equal(stateBattle.previousTurnEvent.data.playerId);
     });
 
-    it('an attack is initiated', function () {
+    it('an attack is initiated and REQUIRE_DICE_ROLL is emitted', function () {
         expect(gameEvents.ATTACK).to.have.length(1);
-        expect(playerEvents.REQUIRE_DICE_ROLL).to.have.length(1);
+        expect(playerEvents.REQUIRE_DICE_ROLL).to.have.length(2);
         expect(playerEvents.REQUIRE_DICE_ROLL[0].maxDice).to.equal(Math.min(fromTerritory.units - 1, 3));
         expect(playerEvents.REQUIRE_DICE_ROLL[0].type).to.equal('attacker');
         expect(playerEvents.REQUIRE_DICE_ROLL[0].playerId).to.equal(stateBattle.previousTurnEvent.data.playerId);
         expect(playerEvents.REQUIRE_DICE_ROLL[0].message).to.match(/^You have to roll dice. You are the attacker/);
+
+        expect(playerEvents.REQUIRE_DICE_ROLL[1].maxDice).to.equal(Math.min(toTerritory.units, 2));
+        expect(playerEvents.REQUIRE_DICE_ROLL[1].type).to.equal('defender');
+        expect(playerEvents.REQUIRE_DICE_ROLL[1].playerId).to.equal(toTerritory.owner);
+        expect(playerEvents.REQUIRE_DICE_ROLL[1].message).to.match(/^You have to roll dice. You are the defender/);
+    });
+
+    it('DEFEND_DICE_ROLL and ATTACK_DICE_ROLL are emitted', function () {
+        expect(gameEvents.ATTACK_DICE_ROLL).to.have.length(1);
+        expect(gameEvents.DEFEND_DICE_ROLL).to.have.length(1);
+        expect(gameEvents.ATTACK_DICE_ROLL[0].playerId).to.equal(fromTerritory.owner);
+        expect(gameEvents.ATTACK_DICE_ROLL[0].dice).to.deep.equal([6, 6, 6]);
+        expect(gameEvents.ATTACK_DICE_ROLL[0].message).to.match(/^Attacking dice rolled by/);
+
+        expect(gameEvents.DEFEND_DICE_ROLL[0].playerId).to.equal(toTerritory.owner);
+        expect(gameEvents.DEFEND_DICE_ROLL[0].dice).to.deep.equal([1]);
+        expect(gameEvents.DEFEND_DICE_ROLL[0].message).to.match(/^Defending dice rolled by/);
+        expect(gameEvents.DEFEND_DICE_ROLL[0].results).to.deep.equal({
+            attackKilled: 0,
+            defendKilled: toTerritory.units,
+            attackRemaining: fromTerritory.units - 1,
+            defendRemaining: 0
+        });
+    });
+
+    it('BATTLE_END is emitted and the attacker has won', function () {
+        expect(gameEvents.BATTLE_END).to.have.length(1);
+        expect(gameEvents.BATTLE_END[0].type).to.equal('attacker');
+        expect(gameEvents.BATTLE_END[0].winner).to.equal(fromTerritory.owner);
+        expect(gameEvents.BATTLE_END[0].message).to.match(/^Battle has ended. Player "3"/);
     });
 
     after(function () {
