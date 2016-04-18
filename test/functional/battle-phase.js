@@ -114,7 +114,7 @@ describe('battle phase', function () {
 
                 game.act.attack(data.playerId, fromTerritory.id, toTerritory.id, fromTerritory.units - 1);
             } else {
-
+                game.act.fortifyPhase(data.playerId);
             }
         });
 
@@ -123,6 +123,10 @@ describe('battle phase', function () {
 
             currentBattleType = data.type;
             game.act.rollDice(data.playerId, data.maxDice);
+        });
+
+        playerListener.on(risk.PLAYER_EVENTS.REQUIRE_FORTIFY_ACTION, data => {
+            playerEvents.REQUIRE_FORTIFY_ACTION.push(data);
         });
 
         game.start();
@@ -186,6 +190,17 @@ describe('battle phase', function () {
         expect(gameEvents.BATTLE_END[0].type).to.equal('attacker');
         expect(gameEvents.BATTLE_END[0].winner).to.equal(fromTerritory.owner);
         expect(gameEvents.BATTLE_END[0].message).to.match(/^Battle has ended. Player "3"/);
+    });
+
+    it('REQUIRE_FORTIFY_ACTION and TURN_PHASE_CHANGE is emitted on foritfy', function () {
+        expect(gameEvents.TURN_PHASE_CHANGE).to.have.length(2);
+        expect(gameEvents.TURN_PHASE_CHANGE[1].playerId).to.equal(fromTerritory.owner);
+        expect(gameEvents.TURN_PHASE_CHANGE[1].phase).to.equal('fortifying');
+        expect(gameEvents.TURN_PHASE_CHANGE[1].message).to.match(/^The turn phase has changed to "fortifying"/);
+
+        expect(playerEvents.REQUIRE_FORTIFY_ACTION).to.have.length(1);
+        expect(playerEvents.REQUIRE_FORTIFY_ACTION[0].playerId).to.equal(fromTerritory.owner);
+        expect(playerEvents.REQUIRE_FORTIFY_ACTION[0].message).to.match(/^You are in the foritfy/);
     });
 
     after(function () {
