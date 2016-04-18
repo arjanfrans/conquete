@@ -37,6 +37,7 @@ describe('setup_a phase', function () {
         return prev;
     }, {});
     const playerOrder = [];
+    const availableTerritories = [];
 
     before(function () {
         gameListener.on(risk.GAME_EVENTS.GAME_START, data => {
@@ -58,6 +59,7 @@ describe('setup_a phase', function () {
                 playerOrder.push(data.playerId);
             }
 
+            availableTerritories.push(game.board.getAvailableTerritories());
             game.act.claimTerritory(data.playerId, data.territoryIds[0]);
         });
 
@@ -66,6 +68,22 @@ describe('setup_a phase', function () {
         });
 
         game.start();
+    });
+
+    it('available territories are correct', function () {
+        const totalTerritories = game.board.getTerritories().length;
+        let offset = 0;
+
+        for (const territories of availableTerritories) {
+            expect(territories).to.have.length(totalTerritories - offset);
+            offset += 1;
+        }
+    });
+
+    it('players do not have cards', function () {
+        for (const player of options.players) {
+            expect(game.getCards(player.id)).to.have.length(0);
+        }
     });
 
     it('REQUIRE_TERRITORY_CLAIM is emitted and turn is changed correctly', function () {

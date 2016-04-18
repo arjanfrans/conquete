@@ -43,6 +43,8 @@ describe('battle phase', function () {
     let fromTerritory = null;
     let toTerritory = null;
     let diceStub = null;
+    let battleData = null;
+    const cardData = [];
 
     before(function () {
         let currentBattleType = null;
@@ -77,6 +79,7 @@ describe('battle phase', function () {
         });
 
         gameListener.on(risk.GAME_EVENTS.ATTACK, data => {
+            battleData = game.battle;
             gameEvents.ATTACK.push(data);
         });
 
@@ -129,6 +132,11 @@ describe('battle phase', function () {
             playerEvents.REQUIRE_FORTIFY_ACTION.push(data);
         });
 
+        playerListener.on(risk.PLAYER_EVENTS.NEW_CARD, data => {
+            playerEvents.NEW_CARD.push(data);
+            cardData.push({ playerId: data.playerId, cards: game.getCards(data.playerId) });
+        });
+
         game.start();
     });
 
@@ -151,6 +159,28 @@ describe('battle phase', function () {
         expect(fromTerritory.owner).to.equal(stateBattle.previousTurnEvent.data.playerId);
         expect(fromTerritory.units).to.be.above(1);
         expect(toTerritory.owner).to.not.equal(stateBattle.previousTurnEvent.data.playerId);
+    });
+
+    it('battle object is returned', function () {
+        expect(battleData).to.deep.equal({
+            from: fromTerritory.id,
+            to: toTerritory.id,
+            players: [fromTerritory.owner, toTerritory.owner],
+            attacker: {
+                player: fromTerritory.owner,
+                initialUnits: fromTerritory.units - 1,
+                units: fromTerritory.units - 1,
+                dice: []
+            },
+            defender: {
+                player: toTerritory.owner,
+                initialUnits: toTerritory.units,
+                units: toTerritory.units,
+                dice: []
+            },
+            turn: fromTerritory.owner,
+            winner: null
+        });
     });
 
     it('an attack is initiated and REQUIRE_DICE_ROLL is emitted', function () {
@@ -201,6 +231,15 @@ describe('battle phase', function () {
         expect(playerEvents.REQUIRE_FORTIFY_ACTION).to.have.length(1);
         expect(playerEvents.REQUIRE_FORTIFY_ACTION[0].playerId).to.equal(fromTerritory.owner);
         expect(playerEvents.REQUIRE_FORTIFY_ACTION[0].message).to.match(/^You are in the foritfy/);
+    });
+
+    it('NEW_CARD is emitted to player, player received card', function () {
+        expect(playerEvents.NEW_CARD).to.have.length(1);
+        expect(playerEvents.NEW_CARD[0].card).to.equal(stateBattle.cardQueue[0]);
+        expect(cardData).to.have.length(1);
+        expect(cardData[0].playerId).to.equal(fromTerritory.owner);
+        expect(cardData[0].cards).to.have.length(1);
+        expect(cardData[0].cards).to.deep.equal([playerEvents.NEW_CARD[0].card]);
     });
 
     after(function () {

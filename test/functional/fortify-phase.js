@@ -38,6 +38,8 @@ describe('battle phase', function () {
         return prev;
     }, {});
 
+    const queuedMoves = [];
+    const playerChanges = [];
 
     before(function () {
         gameListener.on(risk.GAME_EVENTS.GAME_START, data => {
@@ -45,6 +47,7 @@ describe('battle phase', function () {
         });
 
         gameListener.on(risk.GAME_EVENTS.TURN_CHANGE, data => {
+            playerChanges.push(game.currentPlayer);
             gameEvents.TURN_CHANGE.push(data);
         });
 
@@ -54,6 +57,10 @@ describe('battle phase', function () {
 
         gameListener.on(risk.GAME_EVENTS.MOVE_UNITS, data => {
             gameEvents.MOVE_UNITS.push(data);
+        });
+
+        playerListener.on(risk.PLAYER_EVENTS.REQUIRE_PLACEMENT_ACTION, data => {
+            playerEvents.REQUIRE_PLACEMENT_ACTION.push(data);
         });
 
         playerListener.on(risk.PLAYER_EVENTS.REQUIRE_FORTIFY_ACTION, data => {
@@ -69,6 +76,7 @@ describe('battle phase', function () {
                     const toTerritory = adjacent[0];
 
                     if (fromTerritory.units > 1) {
+                        queuedMoves.push({ from: fromTerritory, to: toTerritory, units: fromTerritory.units - 1 });
                         game.act.moveUnits(data.playerId, fromTerritory.id, toTerritory.id, fromTerritory.units - 1);
                     }
                 }
@@ -82,6 +90,12 @@ describe('battle phase', function () {
         });
 
         game.start();
+    });
+
+    it('current player is correct', function () {
+        expect(playerChanges).to.have.length(2);
+        expect(playerChanges[0].id).to.equal(stateFortify.previousTurnEvent.data.playerId);
+        expect(playerChanges[1].id).to.not.equal(stateFortify.previousTurnEvent.data.playerId);
     });
 
     it('GAME_START and TURN_CHANGE emitted game event is emitted', function () {
@@ -104,14 +118,30 @@ describe('battle phase', function () {
         expect(playerEvents.REQUIRE_FORTIFY_ACTION[0].message).to.match(/^You are in the foritfy/);
     });
 
-    it('QUEUED_MOVE is emitted', function () {
-        // expect(playerEvents.QUEUED_MOVE).to.have.length(1);
-        // expect(playerEvents.QUEUED_MOVE[0].movements).to.be.an('array');
-        // // console.log(playerEvents.QUEUED_MOVE[0]);
-        // expect(playerEvents.QUEUED_MOVE[0].movements).to.deep.equal([
-        //
-        // ]);
-        // console.log(playerEvents.QUEUED_MOVE)
-        // console.log(gameEvents.MOVE_UNITS)
+    it('QUEUED_MOVE and MOVE_UNITS are emitted', function () {
+        expect(playerEvents.QUEUED_MOVE).to.have.length(1);
+        expect(playerEvents.QUEUED_MOVE[0].playerId).to.equal(queuedMoves[0].from.owner);
+        expect(playerEvents.QUEUED_MOVE[0].from).to.equal(queuedMoves[0].from.id);
+        expect(playerEvents.QUEUED_MOVE[0].to).to.equal(queuedMoves[0].to.id);
+        expect(playerEvents.QUEUED_MOVE[0].units).to.equal(queuedMoves[0].units);
+        expect(playerEvents.QUEUED_MOVE[0].message).to.match(/^You queued a move with 24/);
+
+        expect(gameEvents.MOVE_UNITS).to.have.length(1);
+        expect(gameEvents.MOVE_UNITS[0].message).to.match(/^Player "3" moved units: 24/);
+        expect(gameEvents.MOVE_UNITS[0].playerId).to.equal(queuedMoves[0].to.owner);
+        expect(gameEvents.MOVE_UNITS[0].movements).to.deep.equal([
+            {
+                from: queuedMoves[0].from.id,
+                to: queuedMoves[0].to.id,
+                units: queuedMoves[0].units
+            }
+        ]);
+    });
+
+    it('END_TURN and REQUIRE_PLACEMENT_ACTION are emitted', function () {
+        expect(gameEvents.TURN_CHANGE[1].playerId).to.not.equal(stateFortify.previousTurnEvent.data.playerId);
+        expect(playerEvents.REQUIRE_PLACEMENT_ACTION).to.have.length(1);
+        expect(playerEvents.REQUIRE_PLACEMENT_ACTION[0].playerId).to.not.equal(stateFortify.previousTurnEvent.data.playerId);
+        expect(playerEvents.REQUIRE_PLACEMENT_ACTION[0].playerId).to.equal(gameEvents.TURN_CHANGE[1].playerId);
     });
 });
