@@ -44,6 +44,7 @@ describe('battle phase', function () {
     let toTerritory = null;
     let diceStub = null;
     let battleData = null;
+    const attackErrors = [];
     const cardData = [];
 
     before(function () {
@@ -125,6 +126,13 @@ describe('battle phase', function () {
             playerEvents.REQUIRE_DICE_ROLL.push(data);
 
             currentBattleType = data.type;
+
+            try {
+                game.act.attack(data.playerId, fromTerritory.id, toTerritory.id, 20);
+            } catch (err) {
+                attackErrors.push(err);
+            }
+
             game.act.rollDice(data.playerId, data.maxDice);
         });
 
@@ -159,6 +167,15 @@ describe('battle phase', function () {
         expect(fromTerritory.owner).to.equal(stateBattle.previousTurnEvent.data.playerId);
         expect(fromTerritory.units).to.be.above(1);
         expect(toTerritory.owner).to.not.equal(stateBattle.previousTurnEvent.data.playerId);
+    });
+
+    it('AlreadyInBattleError is thrown when trying to attackin in a battle', function () {
+        expect(attackErrors).to.have.length(2);
+        expect(attackErrors[0].message).to.match(/^You are already in a battle. You can not attack/);
+        expect(attackErrors[0].name).to.equal('AlreadyInBattleError');
+
+        expect(attackErrors[1].message).to.match(/^It is not your turn. Turn is to player "3"/);
+        expect(attackErrors[1].name).to.equal('TurnError');
     });
 
     it('battle object is returned', function () {

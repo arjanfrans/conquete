@@ -1,4 +1,8 @@
-{
+'use strict';
+
+/* eslint-disable */
+
+module.exports = {
     "turnCount": 105,
     "phase": "battle",
     "previousTurnEvent": {
@@ -878,4 +882,4 @@
             }
         ]
     }
-}
+};
