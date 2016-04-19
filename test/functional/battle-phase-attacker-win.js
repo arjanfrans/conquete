@@ -7,7 +7,7 @@ const stateBattle = require('../states/battle');
 const Dice = require('../../lib/risk/utils/dice');
 const sinon = require('sinon');
 
-describe('battle phase', function () {
+describe('battle phase attacker wins', function () {
     const gameListener = new EventEmitter();
     const playerListener = new EventEmitter();
     const options = {

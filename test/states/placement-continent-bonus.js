@@ -8,13 +8,13 @@ module.exports = {
     "previousTurnEvent": {
         "name": "turnChange",
         "data": {
-            "playerId": "p1",
-            "message": "The turn has changed to player \"p1\"."
+            "playerId": "1",
+            "message": "The turn has changed to player \"1\"."
         }
     },
     "previousPlayerEvent": {
         "name": "requirePlacementAction",
-        "playerId": "p1",
+        "playerId": "1",
         "data": {
             "units": 6,
             "territoryIds": [
@@ -34,13 +34,13 @@ module.exports = {
                 "ural"
             ],
             "message": "You must deploy 6 units on your territories.",
-            "playerId": "p1"
+            "playerId": "1"
         }
     },
     "turn": {
         "movements": [],
         "phase": "placement",
-        "player": "p1",
+        "player": "1",
         "unitsPlaced": 0,
         "cardBonus": 0,
         "battle": null,
@@ -140,7 +140,7 @@ module.exports = {
     ],
     "players": [
         {
-            "id": "p1",
+            "id": "1",
             "dead": false,
             "startUnits": 0,
             "territoryIds": [
@@ -163,7 +163,7 @@ module.exports = {
             "cardsCount": 0
         },
         {
-            "id": "c2",
+            "id": "2",
             "dead": false,
             "startUnits": 0,
             "territoryIds": [
@@ -186,7 +186,7 @@ module.exports = {
             "cardsCount": 0
         },
         {
-            "id": "c3",
+            "id": "3",
             "dead": false,
             "startUnits": 0,
             "territoryIds": [
@@ -210,16 +210,16 @@ module.exports = {
         }
     ],
     "playerQueue": [
-        "c3",
-        "c2",
-        "p1"
+        "3",
+        "2",
+        "1"
     ],
     "board": {
         "territories": [
             {
                 "id": "south_africa",
                 "name": "South Africa",
-                "owner": "c3",
+                "owner": "3",
                 "units": 3,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
@@ -231,7 +231,7 @@ module.exports = {
             {
                 "id": "congo",
                 "name": "Congo",
-                "owner": "p1",
+                "owner": "1",
                 "units": 1,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
@@ -243,7 +243,7 @@ module.exports = {
             {
                 "id": "east_africa",
                 "name": "East Africa",
-                "owner": "c2",
+                "owner": "2",
                 "units": 4,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
@@ -258,7 +258,7 @@ module.exports = {
             {
                 "id": "egypt",
                 "name": "Egypt",
-                "owner": "c2",
+                "owner": "2",
                 "units": 3,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
@@ -271,7 +271,7 @@ module.exports = {
             {
                 "id": "madagascar",
                 "name": "Madagascar",
-                "owner": "c3",
+                "owner": "3",
                 "units": 1,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
@@ -282,7 +282,7 @@ module.exports = {
             {
                 "id": "north_africa",
                 "name": "North Africa",
-                "owner": "c3",
+                "owner": "3",
                 "units": 4,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
@@ -297,7 +297,7 @@ module.exports = {
             {
                 "id": "afganistan",
                 "name": "Afganistan",
-                "owner": "p1",
+                "owner": "1",
                 "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -311,7 +311,7 @@ module.exports = {
             {
                 "id": "china",
                 "name": "China",
-                "owner": "p1",
+                "owner": "1",
                 "units": 3,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -326,7 +326,7 @@ module.exports = {
             {
                 "id": "india",
                 "name": "India",
-                "owner": "c3",
+                "owner": "3",
                 "units": 2,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -339,7 +339,7 @@ module.exports = {
             {
                 "id": "irkutsk",
                 "name": "Irkutsk",
-                "owner": "c3",
+                "owner": "3",
                 "units": 3,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -352,7 +352,7 @@ module.exports = {
             {
                 "id": "japan",
                 "name": "Japan",
-                "owner": "c3",
+                "owner": "3",
                 "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -363,7 +363,7 @@ module.exports = {
             {
                 "id": "kamchatka",
                 "name": "Kamchatka",
-                "owner": "c2",
+                "owner": "2",
                 "units": 2,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -377,7 +377,7 @@ module.exports = {
             {
                 "id": "middle_east",
                 "name": "Middle East",
-                "owner": "c2",
+                "owner": "2",
                 "units": 2,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -392,7 +392,7 @@ module.exports = {
             {
                 "id": "mongolia",
                 "name": "Mongolia",
-                "owner": "c2",
+                "owner": "2",
                 "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -406,7 +406,7 @@ module.exports = {
             {
                 "id": "siam",
                 "name": "Siam",
-                "owner": "p1",
+                "owner": "1",
                 "units": 20,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -418,7 +418,7 @@ module.exports = {
             {
                 "id": "siberia",
                 "name": "Siberia",
-                "owner": "c3",
+                "owner": "3",
                 "units": 3,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -432,7 +432,7 @@ module.exports = {
             {
                 "id": "eastern_australia",
                 "name": "Eastern Australia",
-                "owner": "p1",
+                "owner": "1",
                 "units": 1,
                 "continentId": "australia",
                 "adjacentTerritoryIds": [
@@ -443,7 +443,7 @@ module.exports = {
             {
                 "id": "indonesia",
                 "name": "Indonesia",
-                "owner": "p1",
+                "owner": "1",
                 "units": 1,
                 "continentId": "australia",
                 "adjacentTerritoryIds": [
@@ -455,7 +455,7 @@ module.exports = {
             {
                 "id": "new_guinea",
                 "name": "New Guinea",
-                "owner": "p1",
+                "owner": "1",
                 "units": 1,
                 "continentId": "australia",
                 "adjacentTerritoryIds": [
@@ -467,7 +467,7 @@ module.exports = {
             {
                 "id": "western_australia",
                 "name": "Western Australia",
-                "owner": "p1",
+                "owner": "1",
                 "units": 1,
                 "continentId": "australia",
                 "adjacentTerritoryIds": [
@@ -479,7 +479,7 @@ module.exports = {
             {
                 "id": "great_britain",
                 "name": "Great Britain",
-                "owner": "c2",
+                "owner": "2",
                 "units": 2,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
@@ -492,7 +492,7 @@ module.exports = {
             {
                 "id": "iceland",
                 "name": "Iceland",
-                "owner": "p1",
+                "owner": "1",
                 "units": 1,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
@@ -504,7 +504,7 @@ module.exports = {
             {
                 "id": "northern_europe",
                 "name": "Northern Europe",
-                "owner": "p1",
+                "owner": "1",
                 "units": 1,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
@@ -518,7 +518,7 @@ module.exports = {
             {
                 "id": "scandinavia",
                 "name": "Scandinavia",
-                "owner": "c3",
+                "owner": "3",
                 "units": 2,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
@@ -531,7 +531,7 @@ module.exports = {
             {
                 "id": "southern_europe",
                 "name": "Southern Europe",
-                "owner": "c2",
+                "owner": "2",
                 "units": 3,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
@@ -546,7 +546,7 @@ module.exports = {
             {
                 "id": "ukraine",
                 "name": "Ukraine",
-                "owner": "c3",
+                "owner": "3",
                 "units": 1,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
@@ -561,7 +561,7 @@ module.exports = {
             {
                 "id": "western_europe",
                 "name": "Western Europe",
-                "owner": "c3",
+                "owner": "3",
                 "units": 3,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
@@ -574,7 +574,7 @@ module.exports = {
             {
                 "id": "alaska",
                 "name": "Alaska",
-                "owner": "c2",
+                "owner": "2",
                 "units": 1,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
@@ -586,7 +586,7 @@ module.exports = {
             {
                 "id": "alberta",
                 "name": "Alberta",
-                "owner": "c2",
+                "owner": "2",
                 "units": 2,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
@@ -599,7 +599,7 @@ module.exports = {
             {
                 "id": "central_america",
                 "name": "Central America",
-                "owner": "p1",
+                "owner": "1",
                 "units": 1,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
@@ -611,7 +611,7 @@ module.exports = {
             {
                 "id": "eastern_united_states",
                 "name": "Eastern United States",
-                "owner": "c3",
+                "owner": "3",
                 "units": 3,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
@@ -624,7 +624,7 @@ module.exports = {
             {
                 "id": "greenland",
                 "name": "Greenland",
-                "owner": "c3",
+                "owner": "3",
                 "units": 2,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
@@ -637,7 +637,7 @@ module.exports = {
             {
                 "id": "northwest_territory",
                 "name": "Northwest Territory",
-                "owner": "c2",
+                "owner": "2",
                 "units": 3,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
@@ -650,7 +650,7 @@ module.exports = {
             {
                 "id": "ontario",
                 "name": "Ontario",
-                "owner": "c3",
+                "owner": "3",
                 "units": 3,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
@@ -665,7 +665,7 @@ module.exports = {
             {
                 "id": "quebec",
                 "name": "Quebec",
-                "owner": "c2",
+                "owner": "2",
                 "units": 2,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
@@ -677,7 +677,7 @@ module.exports = {
             {
                 "id": "western_united_states",
                 "name": "Western United States",
-                "owner": "c2",
+                "owner": "2",
                 "units": 6,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
@@ -690,7 +690,7 @@ module.exports = {
             {
                 "id": "argentina",
                 "name": "Argentina",
-                "owner": "c2",
+                "owner": "2",
                 "units": 3,
                 "continentId": "south_america",
                 "adjacentTerritoryIds": [
@@ -701,7 +701,7 @@ module.exports = {
             {
                 "id": "brazil",
                 "name": "Brazil",
-                "owner": "p1",
+                "owner": "1",
                 "units": 1,
                 "continentId": "south_america",
                 "adjacentTerritoryIds": [
@@ -714,7 +714,7 @@ module.exports = {
             {
                 "id": "peru",
                 "name": "Peru",
-                "owner": "c3",
+                "owner": "3",
                 "units": 4,
                 "continentId": "south_america",
                 "adjacentTerritoryIds": [
@@ -726,7 +726,7 @@ module.exports = {
             {
                 "id": "venezuela",
                 "name": "Venezuela",
-                "owner": "p1",
+                "owner": "1",
                 "units": 1,
                 "continentId": "south_america",
                 "adjacentTerritoryIds": [
@@ -738,7 +738,7 @@ module.exports = {
             {
                 "id": "ural",
                 "name": "Ural",
-                "owner": "p1",
+                "owner": "1",
                 "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -751,7 +751,7 @@ module.exports = {
             {
                 "id": "yakutsk",
                 "name": "Yakutsk",
-                "owner": "c2",
+                "owner": "2",
                 "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -810,7 +810,7 @@ module.exports = {
             {
                 "id": "australia",
                 "name": "Australia",
-                "owner": "p1",
+                "owner": "1",
                 "bonus": 2,
                 "territoryIds": [
                     "eastern_australia",
