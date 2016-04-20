@@ -5,7 +5,7 @@ const EventEmitter = require('events');
 const risk = require('../../lib/risk');
 const stateBattle = require('../states/placement-continent-bonus');
 
-describe('placement phase', function () {
+describe('placement phase continent bonus', function () {
     const gameListener = new EventEmitter();
     const playerListener = new EventEmitter();
     const options = {

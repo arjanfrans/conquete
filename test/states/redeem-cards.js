@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 module.exports = {
-    "turnCount": 105,
+    "turnCount": 117,
     "phase": "battle",
     "previousTurnEvent": {
         "name": "turnChange",
@@ -16,11 +16,13 @@ module.exports = {
         "name": "requirePlacementAction",
         "playerId": "1",
         "data": {
-            "units": 6,
+            "units": 7,
             "territoryIds": [
-                "congo",
                 "afganistan",
                 "china",
+                "india",
+                "middle_east",
+                "mongolia",
                 "siam",
                 "eastern_australia",
                 "indonesia",
@@ -31,10 +33,16 @@ module.exports = {
                 "central_america",
                 "brazil",
                 "venezuela",
-                "ural"
+                "ural",
+                "siberia"
             ],
-            "cards": [],
-            "message": "You must deploy 6 units on your territories.",
+            "cards": [
+                "joker_1",
+                "cavalry_madagascar",
+                "cavalry_mongolia",
+                "artillery_western_europe"
+            ],
+            "message": "You must deploy 7 units on your territories. You have the following cards: \"joker_1\", \"cavalry_madagascar\", \"cavalry_mongolia\", \"artillery_western_europe\".",
             "playerId": "1"
         }
     },
@@ -94,13 +102,6 @@ module.exports = {
         "artillery_yakutsk"
     ],
     "cardQueue": [
-        "joker_1",
-        "cavalry_madagascar",
-        "infantry_eastern_united_states",
-        "cavalry_mongolia",
-        "infantry_alaska",
-        "artillery_north_africa",
-        "artillery_western_europe",
         "infantry_irkutsk",
         "infantry_argentina",
         "infantry_siberia",
@@ -145,9 +146,11 @@ module.exports = {
             "dead": false,
             "startUnits": 0,
             "territoryIds": [
-                "congo",
                 "afganistan",
                 "china",
+                "india",
+                "middle_east",
+                "mongolia",
                 "siam",
                 "eastern_australia",
                 "indonesia",
@@ -158,10 +161,16 @@ module.exports = {
                 "central_america",
                 "brazil",
                 "venezuela",
-                "ural"
+                "ural",
+                "siberia"
             ],
-            "cards": [],
-            "cardsCount": 0
+            "cards": [
+                "joker_1",
+                "cavalry_madagascar",
+                "cavalry_mongolia",
+                "artillery_western_europe"
+            ],
+            "cardsCount": 4
         },
         {
             "id": "2",
@@ -171,20 +180,23 @@ module.exports = {
                 "east_africa",
                 "egypt",
                 "kamchatka",
-                "middle_east",
-                "mongolia",
                 "great_britain",
+                "scandinavia",
                 "southern_europe",
                 "alaska",
                 "alberta",
+                "eastern_united_states",
                 "northwest_territory",
                 "quebec",
                 "western_united_states",
                 "argentina",
                 "yakutsk"
             ],
-            "cards": [],
-            "cardsCount": 0
+            "cards": [
+                "infantry_eastern_united_states",
+                "artillery_north_africa"
+            ],
+            "cardsCount": 2
         },
         {
             "id": "3",
@@ -192,22 +204,21 @@ module.exports = {
             "startUnits": 0,
             "territoryIds": [
                 "south_africa",
+                "congo",
                 "madagascar",
                 "north_africa",
-                "india",
                 "irkutsk",
                 "japan",
-                "siberia",
-                "scandinavia",
                 "ukraine",
                 "western_europe",
-                "eastern_united_states",
                 "greenland",
                 "ontario",
                 "peru"
             ],
-            "cards": [],
-            "cardsCount": 0
+            "cards": [
+                "infantry_alaska"
+            ],
+            "cardsCount": 1
         }
     ],
     "playerQueue": [
@@ -221,7 +232,7 @@ module.exports = {
                 "id": "south_africa",
                 "name": "South Africa",
                 "owner": "3",
-                "units": 3,
+                "units": 1,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
                     "madagascar",
@@ -232,7 +243,7 @@ module.exports = {
             {
                 "id": "congo",
                 "name": "Congo",
-                "owner": "1",
+                "owner": "3",
                 "units": 1,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
@@ -260,7 +271,7 @@ module.exports = {
                 "id": "egypt",
                 "name": "Egypt",
                 "owner": "2",
-                "units": 3,
+                "units": 8,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
                     "east_africa",
@@ -273,7 +284,7 @@ module.exports = {
                 "id": "madagascar",
                 "name": "Madagascar",
                 "owner": "3",
-                "units": 1,
+                "units": 2,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
                     "south_africa",
@@ -284,7 +295,7 @@ module.exports = {
                 "id": "north_africa",
                 "name": "North Africa",
                 "owner": "3",
-                "units": 4,
+                "units": 1,
                 "continentId": "africa",
                 "adjacentTerritoryIds": [
                     "congo",
@@ -299,7 +310,7 @@ module.exports = {
                 "id": "afganistan",
                 "name": "Afganistan",
                 "owner": "1",
-                "units": 1,
+                "units": 8,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "china",
@@ -313,7 +324,7 @@ module.exports = {
                 "id": "china",
                 "name": "China",
                 "owner": "1",
-                "units": 3,
+                "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "afganistan",
@@ -327,8 +338,8 @@ module.exports = {
             {
                 "id": "india",
                 "name": "India",
-                "owner": "3",
-                "units": 2,
+                "owner": "1",
+                "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "afganistan",
@@ -341,7 +352,7 @@ module.exports = {
                 "id": "irkutsk",
                 "name": "Irkutsk",
                 "owner": "3",
-                "units": 3,
+                "units": 9,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "kamchatka",
@@ -365,7 +376,7 @@ module.exports = {
                 "id": "kamchatka",
                 "name": "Kamchatka",
                 "owner": "2",
-                "units": 2,
+                "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "irkutsk",
@@ -378,8 +389,8 @@ module.exports = {
             {
                 "id": "middle_east",
                 "name": "Middle East",
-                "owner": "2",
-                "units": 2,
+                "owner": "1",
+                "units": 15,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "east_africa",
@@ -393,8 +404,8 @@ module.exports = {
             {
                 "id": "mongolia",
                 "name": "Mongolia",
-                "owner": "2",
-                "units": 1,
+                "owner": "1",
+                "units": 5,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "china",
@@ -408,7 +419,7 @@ module.exports = {
                 "id": "siam",
                 "name": "Siam",
                 "owner": "1",
-                "units": 20,
+                "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "china",
@@ -419,8 +430,8 @@ module.exports = {
             {
                 "id": "siberia",
                 "name": "Siberia",
-                "owner": "3",
-                "units": 3,
+                "owner": "1",
+                "units": 9,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "china",
@@ -481,7 +492,7 @@ module.exports = {
                 "id": "great_britain",
                 "name": "Great Britain",
                 "owner": "2",
-                "units": 2,
+                "units": 1,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
                     "iceland",
@@ -519,7 +530,7 @@ module.exports = {
             {
                 "id": "scandinavia",
                 "name": "Scandinavia",
-                "owner": "3",
+                "owner": "2",
                 "units": 2,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
@@ -533,7 +544,7 @@ module.exports = {
                 "id": "southern_europe",
                 "name": "Southern Europe",
                 "owner": "2",
-                "units": 3,
+                "units": 1,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
                     "egypt",
@@ -563,7 +574,7 @@ module.exports = {
                 "id": "western_europe",
                 "name": "Western Europe",
                 "owner": "3",
-                "units": 3,
+                "units": 12,
                 "continentId": "europe",
                 "adjacentTerritoryIds": [
                     "north_africa",
@@ -576,7 +587,7 @@ module.exports = {
                 "id": "alaska",
                 "name": "Alaska",
                 "owner": "2",
-                "units": 1,
+                "units": 5,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "kamchatka",
@@ -588,7 +599,7 @@ module.exports = {
                 "id": "alberta",
                 "name": "Alberta",
                 "owner": "2",
-                "units": 2,
+                "units": 8,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "alaska",
@@ -612,8 +623,8 @@ module.exports = {
             {
                 "id": "eastern_united_states",
                 "name": "Eastern United States",
-                "owner": "3",
-                "units": 3,
+                "owner": "2",
+                "units": 1,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "central_america",
@@ -626,7 +637,7 @@ module.exports = {
                 "id": "greenland",
                 "name": "Greenland",
                 "owner": "3",
-                "units": 2,
+                "units": 1,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "iceland",
@@ -639,7 +650,7 @@ module.exports = {
                 "id": "northwest_territory",
                 "name": "Northwest Territory",
                 "owner": "2",
-                "units": 3,
+                "units": 6,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "alaska",
@@ -652,7 +663,7 @@ module.exports = {
                 "id": "ontario",
                 "name": "Ontario",
                 "owner": "3",
-                "units": 3,
+                "units": 6,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "alberta",
@@ -679,7 +690,7 @@ module.exports = {
                 "id": "western_united_states",
                 "name": "Western United States",
                 "owner": "2",
-                "units": 6,
+                "units": 1,
                 "continentId": "north_america",
                 "adjacentTerritoryIds": [
                     "alberta",
@@ -703,7 +714,7 @@ module.exports = {
                 "id": "brazil",
                 "name": "Brazil",
                 "owner": "1",
-                "units": 1,
+                "units": 7,
                 "continentId": "south_america",
                 "adjacentTerritoryIds": [
                     "north_africa",
@@ -716,7 +727,7 @@ module.exports = {
                 "id": "peru",
                 "name": "Peru",
                 "owner": "3",
-                "units": 4,
+                "units": 6,
                 "continentId": "south_america",
                 "adjacentTerritoryIds": [
                     "argentina",
@@ -740,7 +751,7 @@ module.exports = {
                 "id": "ural",
                 "name": "Ural",
                 "owner": "1",
-                "units": 1,
+                "units": 4,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "afganistan",
