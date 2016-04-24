@@ -1,4 +1,6 @@
-{
+'use strict';
+
+module.exports = {
     "turnCount": 141,
     "phase": "battle",
     "previousTurnEvent": {
@@ -865,4 +867,4 @@
             }
         ]
     }
-}
+};
