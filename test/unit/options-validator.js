@@ -1,9 +1,9 @@
 'use strict';
 
-const risk = require('../../lib/risk');
+const risk = require('../../');
 const expect = require('chai').expect;
-const defaultOptions = require('../../lib/risk/utils/default-options');
-const validateOptions = require('../../lib/risk/utils/options-validator');
+const defaultOptions = require('../../lib/utils/default-options');
+const validateOptions = require('../../lib/utils/options-validator');
 const EventEmitter = require('events');
 
 describe('options-validator', function () {

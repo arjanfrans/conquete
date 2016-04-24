@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 const EventEmitter = require('events');
-const risk = require('../../lib/risk');
+const risk = require('../../');
 
 describe('setup_a phase', function () {
     const gameListener = new EventEmitter();

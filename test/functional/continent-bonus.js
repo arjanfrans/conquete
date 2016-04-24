@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 const EventEmitter = require('events');
-const risk = require('../../lib/risk');
+const risk = require('../../');
 const stateBattle = require('../states/placement-continent-bonus');
 
 describe('placement phase continent bonus', function () {

@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 const EventEmitter = require('events');
-const cardValidator = require('../../lib/risk/card-validator');
+const cardValidator = require('../../lib/card-validator');
 
 describe('card validator', function () {
     it('correct bonuses', function () {

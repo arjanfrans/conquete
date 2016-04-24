@@ -6,7 +6,15 @@
 [![Dependency Status](https://david-dm.org/arjanfrans/conquete.svg)](https://david-dm.org/arjanfrans/conquete)
 [![devDependency Status](https://david-dm.org/arjanfrans/conquete/dev-status.svg)](https://david-dm.org/arjanfrans/conquete#info=devDependencies)
 
-This JavaScript module contains the logic for the Risk board game.
+This JavaScript module contains the logic for the Risk board game. Current features are:
+
+* 3 to 6 players. (No 2 player game, since no neutral player has been implemented yet)
+* Classic risk map
+* Option to use a custom map
+* Cards have a fixed bonus (combination and bonus can be configured)
+* Event based (make it easy to work with sockets for example)
+
+The module includes a simple cli to run the game (`npm run cli`).;
 
 ## Installation
 
@@ -17,8 +25,10 @@ npm install --save conquete
 
 ## Usage
 
-A game is initialized with an `EventEmitter` that listens for all game events and an options object. This options object includes
-the map, game rules, and an array of players. Each player has a `listener`, which is an `EventEmitter` that listens to events targeted at that player.
+A game is initialized with an options object. This options object includes
+the map, game rules, an array of players and a listener. The `listener` options is an `EventEmitter` that will listener to
+game events.
+Each player also has a `listener`, which is an `EventEmitter` that listens to events targeted at that player.
 Optionally a state can be passed in to resume a game from a given state.
 
 ```javaScript
@@ -33,12 +43,13 @@ const playerThreeEvents = new EventEmitter();
 const options = {
     map: conquete.maps.classic(), // Map to use
     debug: false, // Debug mode (shows logs)
+    listener: gameEvents, // Listener for game events
     startUnits: { // Number of starting units  for the given amount of players
-        '2': 40,
-        '3': 35,
-        '4': 30,
-        '5': 25,
-        '6': 20
+        2: 40,
+        3: 35,
+        4: 30,
+        5: 25,
+        6: 20
     },
     players: [ // Players
         {
@@ -74,7 +85,7 @@ const options = {
     ]
 };
 
-const game = conquete.Game(gameEvents, options);
+const game = conquete.Game(options);
 
 ```
 
@@ -99,5 +110,5 @@ the game.
 // Read the state from a game
 const state = game.state;
 
-const newGame = conquete.Game(gameEvents, options, state);
+const newGame = conquete.Game(options, state);
 ```

@@ -5,7 +5,7 @@ const argv = require('minimist')(process.argv.slice(2));
 const readline = require('readline');
 const fs = require('fs');
 const rl = readline.createInterface(process.stdin, process.stdout);
-const risk = require('../risk');
+const risk = require('../');
 const commandParser = require('./command-parser');
 const randomValue = require('./helper').randomValue;
 const asciiMap = require('./map');
@@ -13,31 +13,34 @@ const getCombinations = require('./helper').getCombinations;
 const EventEmitter = require('events');
 const Simulation = require('./simulation');
 
-const constants = require('../risk/constants');
-const EVENTS = constants.GAME_EVENTS;
-const PLAYER_EVENTS = constants.PLAYER_EVENTS;
+const EVENTS = risk.GAME_EVENTS;
+const PLAYER_EVENTS = risk.PLAYER_EVENTS;
 
 let state = null;
+
 state = JSON.parse(fs.readFileSync('./risk_state'));
 
-let playerEvents = new EventEmitter();
+const playerEvents = new EventEmitter();
 
-let aiEventEmitters = {
+const aiEventEmitters = {
     '1': new EventEmitter(),
     '2': new EventEmitter(),
     '3': new EventEmitter()
 };
 
-let options = {
+const gameEvents = new EventEmitter();
+
+const options = {
     map: risk.maps.classic(),
     debug: true,
     startUnits: {
-        '2': 40,
-        '3': 35,
-        '4': 30,
-        '5': 25,
-        '6': 20
+        2: 40,
+        3: 35,
+        4: 30,
+        5: 25,
+        6: 20
     },
+    listener: gameEvents,
     players: [
         {
             id: '1',
@@ -82,14 +85,12 @@ const PLAYER_COLORS = {
     // '5': 'magenta'
 };
 
-let gameEvents = new EventEmitter();
-
-let game = risk.Game(gameEvents, options, state);
+const game = risk.Game(options, state);
 
 // process.exit(1);
-let simulation = Simulation(game);
+const simulation = Simulation(game);
 
-let playerIds = ['1'];
+const playerIds = ['1'];
 let currentPlayerId = null;
 
 function write (...data) {

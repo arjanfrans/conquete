@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 const EventEmitter = require('events');
-const risk = require('../../lib/risk');
+const risk = require('../../');
 const state = require('../states/redeem-cards');
 
 describe('redeem cards in placement phase', function () {

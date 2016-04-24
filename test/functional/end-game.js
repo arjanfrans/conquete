@@ -2,9 +2,9 @@
 
 const expect = require('chai').expect;
 const EventEmitter = require('events');
-const risk = require('../../lib/risk');
+const risk = require('../../');
 const state = require('../states/end-game');
-const Dice = require('../../lib/risk/utils/dice');
+const Dice = require('../../lib/utils/dice');
 const sinon = require('sinon');
 
 describe('end the game', function () {
