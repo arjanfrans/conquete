@@ -22,6 +22,7 @@ The module includes a simple cli to run the game (`npm run cli`).;
 npm install --save conquete
 ```
 
+Node version 5.x.x is required and currently you have to run with the `--es_staging` flag.
 
 ## Usage
 

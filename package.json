@@ -2,7 +2,7 @@
   "name": "conquete",
   "version": "0.1.3",
   "description": "Logic for the risk board game",
-  "main": "./lib/risk/index.js",
+  "main": "./index.js",
   "scripts": {
     "cli": "node --es_staging ./cli/start.js",
     "test": "mocha ./test --es_staging --harmony-proxies --recursive --check-leaks --colors",
