@@ -7,7 +7,9 @@ const risk = require('../../lib/risk');
 describe('start game', function () {
     const gameListener = new EventEmitter();
     const playerListener = new EventEmitter();
+
     const options = {
+        listener: gameListener,
         players: [
             {
                 id: '1',
@@ -23,11 +25,20 @@ describe('start game', function () {
         ]
     };
 
-    const game = risk.Game(gameListener, options);
+    const game = risk.Game(options);
 
     it('has correct property values', function () {
         expect(game.options).to.be.an('object');
-        expect(game.options).to.have.all.keys(['players', 'map', 'cardBonus', 'debug', 'jokerCards', 'startUnits']);
+        expect(game.options).to.have.all.keys([
+            'players',
+            'map',
+            'cardBonus',
+            'debug',
+            'jokerCards',
+            'startUnits',
+            'listener'
+        ]);
+
         expect(game.phase).to.equal('setup_a');
         expect(game.turnPhase).to.equal('placement');
         expect(game.isGameOver()).to.equal(false);

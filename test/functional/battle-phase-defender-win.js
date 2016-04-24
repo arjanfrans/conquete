@@ -10,7 +10,9 @@ const sinon = require('sinon');
 describe('battle phase defender wins', function () {
     const gameListener = new EventEmitter();
     const playerListener = new EventEmitter();
+
     const options = {
+        listener: gameListener,
         players: [
             {
                 id: '1',
@@ -26,7 +28,7 @@ describe('battle phase defender wins', function () {
         ]
     };
 
-    const game = risk.Game(gameListener, options, stateBattle);
+    const game = risk.Game(options, stateBattle);
 
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];

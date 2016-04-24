@@ -3,15 +3,16 @@
 const expect = require('chai').expect;
 const EventEmitter = require('events');
 const risk = require('../../lib/risk');
-const state = require('../states/kill-player');
+const state = require('../states/end-game');
 const Dice = require('../../lib/risk/utils/dice');
 const sinon = require('sinon');
 
-describe('battle phase kill player', function () {
+describe('end the game', function () {
     const gameListener = new EventEmitter();
     const playerListener = new EventEmitter();
 
     const options = {
+        debug: true,
         listener: gameListener,
         players: [
             {
@@ -42,12 +43,10 @@ describe('battle phase kill player', function () {
         return prev;
     }, {});
 
-    const fromTerritoryId = 'western_united_states';
-    const toTerritoryId = 'central_america';
     let diceStub = null;
-    let battleData = null;
     const cardData = [];
-    const defeatedCards = [];
+    let gameEndActionError = null;
+    let isGameOverBefore = null;
 
     before(function () {
         let currentBattleType = null;
@@ -90,7 +89,6 @@ describe('battle phase kill player', function () {
         });
 
         gameListener.on(risk.GAME_EVENTS.DEFEND_DICE_ROLL, data => {
-            battleData = game.battle;
             gameEvents.DEFEND_DICE_ROLL.push(data);
         });
 
@@ -98,24 +96,14 @@ describe('battle phase kill player', function () {
             gameEvents.BATTLE_END.push(data);
         });
 
-        gameListener.on(risk.GAME_EVENTS.PLAYER_DEFEATED, data => {
-            gameEvents.PLAYER_DEFEATED.push(data);
+        gameListener.on(risk.GAME_EVENTS.GAME_END, data => {
+            gameEvents.GAME_END.push(data);
         });
 
-        let firstBattle = null;
-
         playerListener.on(risk.PLAYER_EVENTS.REQUIRE_ATTACK_ACTION, data => {
-            defeatedCards.push(...game.getCards('2'));
-
             playerEvents.REQUIRE_ATTACK_ACTION.push(data);
 
-            if (!firstBattle) {
-                firstBattle = true;
-
-                game.act.attack(data.playerId, fromTerritoryId, toTerritoryId, 7);
-            } else {
-                game.act.fortifyPhase(data.playerId);
-            }
+            game.act.attack(data.playerId, 'india', 'china', 10);
         });
 
         playerListener.on(risk.PLAYER_EVENTS.REQUIRE_DICE_ROLL, data => {
@@ -123,7 +111,17 @@ describe('battle phase kill player', function () {
 
             currentBattleType = data.type;
 
+            isGameOverBefore = game.isGameOver();
+
             game.act.rollDice(data.playerId, data.maxDice);
+
+            if (game.isGameOver()) {
+                try {
+                    game.act.fortifyPhase(data.playerId);
+                } catch (err) {
+                    gameEndActionError = err;
+                }
+            }
         });
 
         playerListener.on(risk.PLAYER_EVENTS.REQUIRE_FORTIFY_ACTION, data => {
@@ -142,94 +140,60 @@ describe('battle phase kill player', function () {
         expect(gameEvents.GAME_START).to.have.length(1);
         expect(gameEvents.GAME_START[0]).to.have.property('message');
         expect(gameEvents.TURN_CHANGE).to.have.length(1);
-        expect(gameEvents.TURN_CHANGE[0]).to.have.property('playerId', state.turn.player);
-    });
-
-    it('REQUIRE_ATTACK_ACTION is emitted', function () {
-        expect(playerEvents.REQUIRE_ATTACK_ACTION).to.have.length(2);
-        expect(playerEvents.REQUIRE_ATTACK_ACTION[0]).to.have.property('playerId', state.turn.player);
-        expect(playerEvents.REQUIRE_ATTACK_ACTION[0].message).to.match(/^You are in the attack phase/);
+        expect(gameEvents.TURN_CHANGE[0].playerId).to.equal(state.turn.player);
     });
 
     it('an attack is initiated and REQUIRE_DICE_ROLL is emitted', function () {
         expect(gameEvents.ATTACK).to.have.length(1);
         expect(playerEvents.REQUIRE_DICE_ROLL).to.have.length(2);
-        expect(playerEvents.REQUIRE_DICE_ROLL[0].maxDice).to.equal(3);
+        expect(playerEvents.REQUIRE_DICE_ROLL[0].maxDice).to.equal(Math.min(state.turn.battle.attacker.units, 3));
         expect(playerEvents.REQUIRE_DICE_ROLL[0].type).to.equal('attacker');
-        expect(playerEvents.REQUIRE_DICE_ROLL[0].playerId).to.equal(state.turn.player);
+        expect(playerEvents.REQUIRE_DICE_ROLL[0].playerId).to.equal(state.turn.battle.attacker.player);
         expect(playerEvents.REQUIRE_DICE_ROLL[0].message).to.match(/^You have to roll dice. You are the attacker/);
 
         expect(playerEvents.REQUIRE_DICE_ROLL[1].maxDice).to.equal(1);
         expect(playerEvents.REQUIRE_DICE_ROLL[1].type).to.equal('defender');
-        expect(playerEvents.REQUIRE_DICE_ROLL[1].playerId).to.equal('2');
+        expect(playerEvents.REQUIRE_DICE_ROLL[1].playerId).to.equal(state.turn.battle.defender.player);
         expect(playerEvents.REQUIRE_DICE_ROLL[1].message).to.match(/^You have to roll dice. You are the defender/);
     });
 
     it('DEFEND_DICE_ROLL and ATTACK_DICE_ROLL are emitted', function () {
         expect(gameEvents.ATTACK_DICE_ROLL).to.have.length(1);
         expect(gameEvents.DEFEND_DICE_ROLL).to.have.length(1);
-        expect(gameEvents.ATTACK_DICE_ROLL[0].playerId).to.equal(state.turn.player);
+        expect(gameEvents.ATTACK_DICE_ROLL[0].playerId).to.equal(state.turn.battle.attacker.player);
         expect(gameEvents.ATTACK_DICE_ROLL[0].dice).to.deep.equal([6, 6, 6]);
         expect(gameEvents.ATTACK_DICE_ROLL[0].message).to.match(/^Attacking dice rolled by/);
 
-        expect(gameEvents.DEFEND_DICE_ROLL[0].playerId).to.equal('2');
+        expect(gameEvents.DEFEND_DICE_ROLL[0].playerId).to.equal(state.turn.battle.defender.player);
         expect(gameEvents.DEFEND_DICE_ROLL[0].dice).to.deep.equal([1]);
         expect(gameEvents.DEFEND_DICE_ROLL[0].message).to.match(/^Defending dice rolled by/);
         expect(gameEvents.DEFEND_DICE_ROLL[0].results).to.deep.equal({
+            attackRemaining: 37,
+            defendRemaining: 0,
             attackKilled: 0,
-            defendKilled: 1,
-            attackRemaining: 7,
-            defendRemaining: 0
+            defendKilled: 1
         });
     });
 
     it('BATTLE_END is emitted and the attacker has won', function () {
-        // first is from previous turn event
-        expect(gameEvents.BATTLE_END).to.have.length(2);
-
-        expect(gameEvents.BATTLE_END[1].type).to.equal('attacker');
-        expect(gameEvents.BATTLE_END[1].winner).to.equal(state.turn.player);
-        expect(gameEvents.BATTLE_END[1].message).to.match(/^Battle has ended. Player "1", the attacker, has won/);
+        expect(gameEvents.BATTLE_END).to.have.length(1);
+        expect(gameEvents.BATTLE_END[0].type).to.equal('attacker');
+        expect(gameEvents.BATTLE_END[0].winner).to.equal(state.turn.player);
+        expect(gameEvents.BATTLE_END[0].message).to.match(/^Battle has ended. Player "\d"/);
     });
 
-    it('battle data at end of battle is correct', function () {
-        expect(battleData).to.deep.equal({
-            from: 'western_united_states',
-            to: 'central_america',
-            players: ['1', '2'],
-            attacker: { player: '1', initialUnits: 7, units: 7, dice: [] },
-            defender: { player: '2', initialUnits: 1, units: 0, dice: [] },
-            turn: '2',
-            winner: '1'
-        });
+    it('GAME_END is emitted when last player is defeated', function () {
+        expect(isGameOverBefore).to.equal(false);
+        expect(game.isGameOver()).to.equal(true);
+
+        expect(gameEvents.GAME_END).to.have.length(1);
+        expect(gameEvents.GAME_END[0].winner).to.equal(state.turn.battle.attacker.player);
+        expect(gameEvents.GAME_END[0].message).to.match(/^Player "1" has won the game./);
     });
 
-    it('PLAYER_DEFEATED is emitted', function () {
-        expect(gameEvents.PLAYER_DEFEATED).to.have.length(1);
-        expect(gameEvents.PLAYER_DEFEATED[0].defeatedBy).to.equal(state.turn.player);
-        expect(gameEvents.PLAYER_DEFEATED[0].numberOfCardsTaken).to.equal(defeatedCards.length);
-        expect(gameEvents.PLAYER_DEFEATED[0].playerId).to.equal('2');
-        expect(gameEvents.PLAYER_DEFEATED[0].message).to.match(/^Player "2" is defeated by player "1"/);
-    });
-
-    it('REQUIRE_FORTIFY_ACTION and TURN_PHASE_CHANGE is emitted on foritfy', function () {
-        expect(gameEvents.TURN_PHASE_CHANGE).to.have.length(1);
-        expect(gameEvents.TURN_PHASE_CHANGE[0].playerId).to.equal(state.turn.player);
-        expect(gameEvents.TURN_PHASE_CHANGE[0].phase).to.equal('fortifying');
-        expect(gameEvents.TURN_PHASE_CHANGE[0].message).to.match(/^The turn phase has changed to "fortifying"/);
-
-        expect(playerEvents.REQUIRE_FORTIFY_ACTION).to.have.length(1);
-        expect(playerEvents.REQUIRE_FORTIFY_ACTION[0].playerId).to.equal(state.turn.player);
-        expect(playerEvents.REQUIRE_FORTIFY_ACTION[0].message).to.match(/^You are in the foritfy/);
-    });
-
-    it('NEW_CARD is emitted for each of the defeated player\'s cards', function () {
-        // +1 for conquest in turn
-        expect(playerEvents.NEW_CARD).to.have.length(defeatedCards.length + 1);
-
-        for (let i = 0; i < defeatedCards.length; i++) {
-            expect(playerEvents.NEW_CARD[i].card).to.equal(defeatedCards[i]);
-        }
+    it('error is thrown when action is attempted after game ended', function () {
+        expect(gameEndActionError.message).to.equal('Game has ended.');
+        expect(gameEndActionError.name).to.equal('GameEndedError');
     });
 
     after(function () {

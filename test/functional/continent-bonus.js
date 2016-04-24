@@ -8,7 +8,9 @@ const stateBattle = require('../states/placement-continent-bonus');
 describe('placement phase continent bonus', function () {
     const gameListener = new EventEmitter();
     const playerListener = new EventEmitter();
+
     const options = {
+        listener: gameListener,
         players: [
             {
                 id: '1',
@@ -24,7 +26,7 @@ describe('placement phase continent bonus', function () {
         ]
     };
 
-    const game = risk.Game(gameListener, options, stateBattle);
+    const game = risk.Game(options, stateBattle);
 
     const playerEvents = Object.keys(risk.PLAYER_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];

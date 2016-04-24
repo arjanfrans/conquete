@@ -7,7 +7,10 @@ const risk = require('../../lib/risk');
 describe('setup_a phase', function () {
     const gameListener = new EventEmitter();
     const playerListener = new EventEmitter();
+
     const options = {
+        debug: true,
+        listener: gameListener,
         players: [
             {
                 id: '1',
@@ -23,7 +26,7 @@ describe('setup_a phase', function () {
         ]
     };
 
-    const game = risk.Game(gameListener, options);
+    const game = risk.Game(options);
 
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];
@@ -36,8 +39,10 @@ describe('setup_a phase', function () {
 
         return prev;
     }, {});
+
     const playerOrder = [];
     const availableTerritories = [];
+    let claimTerritoryError = null;
 
     before(function () {
         gameListener.on(risk.GAME_EVENTS.GAME_START, data => {
@@ -52,6 +57,8 @@ describe('setup_a phase', function () {
             gameEvents.PHASE_CHANGE.push(data);
         });
 
+        const takenTerritories = [];
+
         playerListener.on(risk.PLAYER_EVENTS.REQUIRE_TERRITORY_CLAIM, data => {
             playerEvents.REQUIRE_TERRITORY_CLAIM.push(data);
 
@@ -60,6 +67,16 @@ describe('setup_a phase', function () {
             }
 
             availableTerritories.push(game.board.getAvailableTerritories());
+
+            try {
+                if (!claimTerritoryError && takenTerritories.length > 0) {
+                    game.act.claimTerritory(data.playerId, takenTerritories[0]);
+                }
+            } catch (err) {
+                claimTerritoryError = err;
+            }
+
+            takenTerritories.push(data.territoryIds[0]);
             game.act.claimTerritory(data.playerId, data.territoryIds[0]);
         });
 
@@ -84,6 +101,11 @@ describe('setup_a phase', function () {
         for (const player of options.players) {
             expect(game.getCards(player.id)).to.have.length(0);
         }
+    });
+
+    it('error is thrown when a territory is already claimed', function () {
+        expect(claimTerritoryError.message).to.match(/^Territory "south_africa" is already claimed by player "\d"./);
+        expect(claimTerritoryError.name).to.equal('TerritoryClaimedError');
     });
 
     it('REQUIRE_TERRITORY_CLAIM is emitted and turn is changed correctly', function () {

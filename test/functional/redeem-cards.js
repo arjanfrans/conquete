@@ -8,7 +8,9 @@ const state = require('../states/redeem-cards');
 describe('redeem cards in placement phase', function () {
     const gameListener = new EventEmitter();
     const playerListener = new EventEmitter();
+
     const options = {
+        listener: gameListener,
         players: [
             {
                 id: '1',
@@ -24,7 +26,7 @@ describe('redeem cards in placement phase', function () {
         ]
     };
 
-    const game = risk.Game(gameListener, options, state);
+    const game = risk.Game(options, state);
 
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];

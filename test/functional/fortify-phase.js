@@ -8,7 +8,9 @@ const stateFortify = require('../states/fortify');
 describe('battle phase', function () {
     const gameListener = new EventEmitter();
     const playerListener = new EventEmitter();
+
     const options = {
+        listener: gameListener,
         players: [
             {
                 id: '1',
@@ -24,7 +26,7 @@ describe('battle phase', function () {
         ]
     };
 
-    const game = risk.Game(gameListener, options, stateFortify);
+    const game = risk.Game(options, stateFortify);
 
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];

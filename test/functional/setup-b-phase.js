@@ -8,7 +8,9 @@ const stateSetupB = require('../states/setup-b');
 describe('setup_b phase', function () {
     const gameListener = new EventEmitter();
     const playerListener = new EventEmitter();
+
     const options = {
+        listener: gameListener,
         players: [
             {
                 id: '1',
@@ -24,7 +26,7 @@ describe('setup_b phase', function () {
         ]
     };
 
-    const game = risk.Game(gameListener, options, stateSetupB);
+    const game = risk.Game(options, stateSetupB);
 
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];

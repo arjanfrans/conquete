@@ -1,15 +1,19 @@
-{
+'use strict';
+
+/* eslint-disable */
+
+module.exports = {
     "turnCount": 143,
     "phase": "battle",
     "previousTurnEvent": {
         "name": "attack",
         "data": {
-            "from": "india",
-            "to": "china",
+            "from": "afganistan",
+            "to": "middle_east",
             "attacker": "1",
             "defender": "3",
-            "units": 37,
-            "message": "Attack initiated by player \"1\" with 37 units. From territory \"india\" to \"china\", owned by player \"3\"."
+            "units": 50,
+            "message": "Attack initiated by player \"1\" with 50 units. From territory \"afganistan\" to \"middle_east\", owned by player \"3\"."
         }
     },
     "previousPlayerEvent": {
@@ -29,16 +33,16 @@
         "unitsPlaced": 50,
         "cardBonus": 20,
         "battle": {
-            "from": "india",
-            "to": "china",
+            "from": "afganistan",
+            "to": "middle_east",
             "players": [
                 "1",
                 "3"
             ],
             "attacker": {
                 "player": "1",
-                "initialUnits": 37,
-                "units": 37,
+                "initialUnits": 50,
+                "units": 50,
                 "dice": []
             },
             "defender": {
@@ -50,7 +54,7 @@
             "turn": "1",
             "winner": null
         },
-        "wonBattle": true
+        "wonBattle": false
     },
     "cards": [
         "joker_0",
@@ -171,7 +175,6 @@
                 "western_europe",
                 "alaska",
                 "alberta",
-                "central_america",
                 "eastern_united_states",
                 "greenland",
                 "northwest_territory",
@@ -184,8 +187,7 @@
                 "venezuela",
                 "ural",
                 "yakutsk",
-                "middle_east",
-                "india"
+                "central_america"
             ],
             "cards": [
                 "infantry_eastern_united_states",
@@ -207,7 +209,9 @@
             "dead": false,
             "startUnits": 0,
             "territoryIds": [
-                "china"
+                "china",
+                "india",
+                "middle_east"
             ],
             "cards": [
                 "artillery_indonesia",
@@ -304,7 +308,7 @@
                 "id": "afganistan",
                 "name": "Afganistan",
                 "owner": "1",
-                "units": 1,
+                "units": 51,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "china",
@@ -332,8 +336,8 @@
             {
                 "id": "india",
                 "name": "India",
-                "owner": "1",
-                "units": 38,
+                "owner": "3",
+                "units": 10,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
                     "afganistan",
@@ -383,7 +387,7 @@
             {
                 "id": "middle_east",
                 "name": "Middle East",
-                "owner": "1",
+                "owner": "3",
                 "units": 1,
                 "continentId": "asia",
                 "adjacentTerritoryIds": [
@@ -888,4 +892,4 @@
             }
         ]
     }
-}
+};
