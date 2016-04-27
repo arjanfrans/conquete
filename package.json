@@ -18,7 +18,6 @@
     "url": "https://github.com/arjanfrans/conquete"
   },
   "dependencies": {
-    "co": "^4.6.0",
     "debug": "^2.2.0",
     "jsonschema": "^1.1.0"
   },
@@ -28,7 +27,6 @@
     "eslint": "^2.7.0",
     "istanbul": "^0.4.3",
     "mocha": "^2.4.5",
-    "mocha-lcov-reporter": "^1.2.0",
     "sinon": "^1.17.3"
   }
 }
