@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "debug": "^2.2.0",
-    "jsonschema": "^1.1.0"
+    "jsonschema": "^1.1.0",
+    "strict-errors": "^0.1.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
