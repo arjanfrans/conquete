@@ -18,7 +18,7 @@ const PLAYER_EVENTS = risk.PLAYER_EVENTS;
 
 let state = null;
 
-state = JSON.parse(fs.readFileSync('./risk_state'));
+// state = JSON.parse(fs.readFileSync('./risk_state'));
 
 const playerEvents = new EventEmitter();
 
@@ -44,8 +44,8 @@ const options = {
     players: [
         {
             id: '1',
-            // listener: aiEventEmitters['1']
-            listener: playerEvents
+            listener: aiEventEmitters['1']
+            // listener: playerEvents
         },
         {
             id: '2',

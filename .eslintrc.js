@@ -182,7 +182,7 @@ module.exports = {
             }
         ],
         "no-unmodified-loop-condition": "error",
-        "no-unneeded-ternary": "error",
+        // "no-unneeded-ternary": "error",
         "no-unused-expressions": "error",
         "no-use-before-define": "error",
         "no-useless-call": "error",
