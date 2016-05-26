@@ -4,10 +4,10 @@
   "description": "Logic for the risk board game",
   "main": "./index.js",
   "scripts": {
-    "cli": "node --es_staging ./cli/start.js",
-    "test": "mocha ./test --es_staging --harmony-proxies --recursive --check-leaks --colors",
+    "cli": "node ./cli/start.js",
+    "test": "mocha ./test --recursive --check-leaks --colors",
     "test:watch": "npm test -- --watch",
-    "cover": "node --es_staging ./node_modules/istanbul/lib/cli.js --include-all-sources cover --root lib _mocha ./test -R --spec -- --recursive",
+    "cover": "node ./node_modules/istanbul/lib/cli.js --include-all-sources cover --root lib _mocha ./test -R --spec -- --recursive",
     "ci": "npm run cover",
     "lint": "eslint lib"
   },
