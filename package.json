@@ -20,15 +20,16 @@
   "dependencies": {
     "debug": "^2.2.0",
     "jsonschema": "^1.1.0",
-    "strict-emitter": "0.0.2",
+    "object-protect": "0.0.3",
+    "strict-emitter": "0.0.5",
     "strict-errors": "^0.1.4"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "coveralls": "^2.11.9",
-    "eslint": "^2.7.0",
+    "eslint": "^2.10.2",
     "istanbul": "^0.4.3",
-    "mocha": "^2.4.5",
-    "sinon": "^1.17.3"
+    "mocha": "^2.5.3",
+    "sinon": "^1.17.4"
   }
 }
