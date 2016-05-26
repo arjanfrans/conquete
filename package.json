@@ -1,6 +1,6 @@
 {
   "name": "conquete",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Logic for the risk board game",
   "main": "./index.js",
   "scripts": {
