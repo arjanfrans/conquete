@@ -26,8 +26,6 @@ describe('setup_b phase', function () {
         ]
     };
 
-    const game = risk.Game(options, stateSetupB);
-
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];
 
@@ -43,8 +41,11 @@ describe('setup_b phase', function () {
     const deployErrors = [];
     let placementData = null;
     let placementTerritory = null;
+    let game = null;
 
     before(function () {
+        game = risk.Game(options, stateSetupB);
+
         gameListener.on(risk.GAME_EVENTS.GAME_START, data => {
             gameEvents.GAME_START.push(data);
         });

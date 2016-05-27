@@ -25,16 +25,22 @@ describe('start game', function () {
         ]
     };
 
-    const game = risk.Game(options);
+    let game = null;
+
+    before(function () {
+        game = risk.Game(options);
+    });
 
     it('has correct property values', function () {
         expect(game.options).to.be.an('object');
         expect(game.options).to.have.all.keys([
             'players',
             'map',
-            'cardBonus',
             'debug',
+            'jokerCard',
             'jokerCards',
+            'cardBonus',
+            'cardTypes',
             'startUnits',
             'listener'
         ]);

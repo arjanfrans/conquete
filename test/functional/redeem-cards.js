@@ -26,8 +26,6 @@ describe('redeem cards in placement phase', function () {
         ]
     };
 
-    const game = risk.Game(options, state);
-
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];
 
@@ -48,8 +46,11 @@ describe('redeem cards in placement phase', function () {
     let validCombination = null;
     let cards = null;
     let availableUnitsBefore = null;
+    let game = null;
 
     before(function () {
+        game = risk.Game(options, state);
+
         for (const gameEvent of Object.keys(gameEvents)) {
             gameListener.on(risk.GAME_EVENTS[gameEvent], data => {
                 gameEvents[gameEvent].push(data);
@@ -70,7 +71,11 @@ describe('redeem cards in placement phase', function () {
             }
 
             try {
-                game.act.redeemCards(data.playerId, ['a_1', 'a_2', 'a_3']);
+                game.act.redeemCards(data.playerId, [
+                    'artillery_middle_east',
+                    'joker_0',
+                    'infantry_new_guinea'
+                ]);
             } catch (err) {
                 notOwnCards = err;
             }
@@ -105,8 +110,12 @@ describe('redeem cards in placement phase', function () {
         expect(numberOfCardsError.message).to.match(/^You must redeem 3 cards.$/);
 
         expect(notOwnCards.name).to.equal('NotOwnCardsError');
-        expect(notOwnCards.message).to.match(/^You do not have these cards: "a_1", /);
-        expect(notOwnCards.data.cards).to.deep.equal(['a_1', 'a_2', 'a_3']);
+        expect(notOwnCards.message).to.match(/^You do not have these cards: "artil/);
+        expect(notOwnCards.data.cards).to.deep.equal([
+            'artillery_middle_east',
+            'joker_0',
+            'infantry_new_guinea'
+        ]);
 
         expect(invalidComboError.name).to.equal('InvalidCardsError');
         expect(invalidComboError.data.cards).to.deep.equal(invalidCombination);

@@ -26,8 +26,6 @@ describe('setup_a phase', function () {
         ]
     };
 
-    const game = risk.Game(options);
-
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];
 
@@ -43,8 +41,11 @@ describe('setup_a phase', function () {
     const playerOrder = [];
     const availableTerritories = [];
     let claimTerritoryError = null;
+    let game = null;
 
     before(function () {
+        game = risk.Game(options);
+
         gameListener.on(risk.GAME_EVENTS.GAME_START, data => {
             gameEvents.GAME_START.push(data);
         });

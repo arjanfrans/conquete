@@ -26,8 +26,6 @@ describe('placement phase continent bonus', function () {
         ]
     };
 
-    const game = risk.Game(options, stateBattle);
-
     const playerEvents = Object.keys(risk.PLAYER_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];
 
@@ -36,8 +34,11 @@ describe('placement phase continent bonus', function () {
 
     let continents = null;
     let playerContinents = null;
+    let game = null;
 
     before(function () {
+        game = risk.Game(options, stateBattle);
+
         playerListener.on(risk.PLAYER_EVENTS.REQUIRE_PLACEMENT_ACTION, data => {
             playerEvents.REQUIRE_PLACEMENT_ACTION.push(data);
 

@@ -47,18 +47,27 @@ function simulation (risk) {
     }
 
     function redeemCards (player) {
+        let limit = 500;
+
         while (risk.getCards(player.id).length > 4) {
             let combinations = () => {
                 return getCombinations(risk.getCards(player.id).slice(0, 5));
             };
 
             for (let combination of combinations()) {
+                console.log(combination);
                 if (risk.utils.isValidCardCombo(combination)) {
                     risk.act.redeemCards(player.id, combination);
 
                     break;
                 }
             }
+
+            if (limit < 0) {
+                throw new Error('Loop taking too long')
+            }
+
+            limit -= 1;
         }
     }
 

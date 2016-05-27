@@ -29,8 +29,6 @@ describe('end the game', function () {
         ]
     };
 
-    const game = risk.Game(options, state);
-
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];
 
@@ -47,8 +45,11 @@ describe('end the game', function () {
     const cardData = [];
     let gameEndActionError = null;
     let isGameOverBefore = null;
+    let game = null;
 
     before(function () {
+        game = risk.Game(options, state);
+
         let currentBattleType = null;
 
         // Let the attacker always win

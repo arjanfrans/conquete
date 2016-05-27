@@ -28,8 +28,6 @@ describe('battle phase defender wins', function () {
         ]
     };
 
-    const game = risk.Game(options, stateBattle);
-
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];
 
@@ -47,6 +45,8 @@ describe('battle phase defender wins', function () {
     let diceStub = null;
 
     before(function () {
+        const game = risk.Game(options, stateBattle);
+
         let currentBattleType = null;
 
         // Let the defender always win

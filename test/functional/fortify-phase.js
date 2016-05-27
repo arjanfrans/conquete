@@ -26,8 +26,6 @@ describe('battle phase', function () {
         ]
     };
 
-    const game = risk.Game(options, stateFortify);
-
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];
 
@@ -44,6 +42,8 @@ describe('battle phase', function () {
     const playerChanges = [];
 
     before(function () {
+        const game = risk.Game(options, stateFortify);
+
         gameListener.on(risk.GAME_EVENTS.GAME_START, data => {
             gameEvents.GAME_START.push(data);
         });

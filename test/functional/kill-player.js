@@ -28,8 +28,6 @@ describe('battle phase kill player', function () {
         ]
     };
 
-    const game = risk.Game(options, state);
-
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];
 
@@ -50,6 +48,7 @@ describe('battle phase kill player', function () {
     const defeatedCards = [];
 
     before(function () {
+        let game = risk.Game(options, state);
         let currentBattleType = null;
 
         // Let the attacker always win

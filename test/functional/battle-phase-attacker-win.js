@@ -29,8 +29,6 @@ describe('battle phase attacker wins', function () {
         ]
     };
 
-    const game = risk.Game(options, stateBattle);
-
     const gameEvents = Object.keys(risk.GAME_EVENTS).reduce((prev, eventName) => {
         prev[eventName] = [];
 
@@ -51,6 +49,8 @@ describe('battle phase attacker wins', function () {
     const cardData = [];
 
     before(function () {
+        const game = risk.Game(options, stateBattle);
+
         let currentBattleType = null;
 
         // Let the attacker always win
@@ -255,7 +255,7 @@ describe('battle phase attacker wins', function () {
 
     it('NEW_CARD is emitted to player, player received card', function () {
         expect(playerEvents.NEW_CARD).to.have.length(1);
-        expect(playerEvents.NEW_CARD[0].card).to.equal(stateBattle.cardQueue[0]);
+        expect(playerEvents.NEW_CARD[0].card).to.equal(stateBattle.cardManager.queueCards[0]);
         expect(cardData).to.have.length(1);
         expect(cardData[0].playerId).to.equal(fromTerritory.owner);
         expect(cardData[0].cards).to.have.length(1);
