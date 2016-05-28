@@ -93,8 +93,8 @@ const game = conquete.Game(options);
 ### Errors
 
 Errors that the game can thrown can be found here:
-* [Game errors](./lib/risk/errors/game-errors.js): All errors that can be thrown during a game.
-* [Validation errors](./lib/risk/errors/validation-errors.js): All errors that can be thrown during initialization.
+* [Game errors](./lib/errors/game-errors.js): All errors that can be thrown during a game.
+* [Validation errors](./lib/errors/validation-errors.js): All errors that can be thrown during initialization.
 
 ### Game events
 
