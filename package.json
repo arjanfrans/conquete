@@ -14,8 +14,7 @@
     "lint": "eslint lib"
   },
   "files": [
-    "dist",
-    "maps"
+    "dist"
   ],
   "author": "Arjan Frans <arjanfrans.com@gmail.com>",
   "license": "MIT",
