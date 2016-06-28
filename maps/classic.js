@@ -70,8 +70,8 @@ module.exports = function () {
                 ]
             },
             {
-                id: 'afganistan',
-                name: 'Afganistan',
+                id: 'afghanistan',
+                name: 'Afghanistan',
                 continentId: 'asia',
                 adjacentTerritoryIds: [
                     'china',
@@ -86,7 +86,7 @@ module.exports = function () {
                 name: 'China',
                 continentId: 'asia',
                 adjacentTerritoryIds: [
-                    'afganistan',
+                    'afghanistan',
                     'india',
                     'mongolia',
                     'siam',
@@ -99,7 +99,7 @@ module.exports = function () {
                 name: 'India',
                 continentId: 'asia',
                 adjacentTerritoryIds: [
-                    'afganistan',
+                    'afghanistan',
                     'china',
                     'middle_east',
                     'siam'
@@ -144,7 +144,7 @@ module.exports = function () {
                 adjacentTerritoryIds: [
                     'east_africa',
                     'egypt',
-                    'afganistan',
+                    'afghanistan',
                     'india',
                     'southern_europe',
                     'ukraine'
@@ -285,7 +285,7 @@ module.exports = function () {
                 name: 'Ukraine',
                 continentId: 'europe',
                 adjacentTerritoryIds: [
-                    'afganistan',
+                    'afghanistan',
                     'middle_east',
                     'ural',
                     'northern_europe',
@@ -447,7 +447,7 @@ module.exports = function () {
                 name: 'Ural',
                 continentId: 'asia',
                 adjacentTerritoryIds: [
-                    'afganistan',
+                    'afghanistan',
                     'china',
                     'siberia',
                     'ukraine'
@@ -483,7 +483,7 @@ module.exports = function () {
                 name: 'Asia',
                 bonus: 7,
                 territoryIds: [
-                    'afganistan',
+                    'afghanistan',
                     'china',
                     'india',
                     'irkutsk',
