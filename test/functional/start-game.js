@@ -78,6 +78,9 @@ describe('start game', function () {
             return prev;
         }, {});
 
+        let startedBefore = null;
+        let startedAfter = null;
+
         before(function () {
             gameListener.on(risk.GAME_EVENTS.GAME_START, data => {
                 gameEvents.GAME_START.push(data);
@@ -95,7 +98,11 @@ describe('start game', function () {
                 playerEvents.REQUIRE_TERRITORY_CLAIM.push(data);
             });
 
+            startedBefore = game.isStarted();
+
             game.start();
+
+            startedAfter = game.isStarted();
         });
 
         it('throws errors when forbidden methods are called', function () {
@@ -106,6 +113,11 @@ describe('start game', function () {
             for (const actionName of forbiddenActions) {
                 expect(() => game.act[actionName]()).to.throw('Action is not allowed in game phase "setup_a".');
             }
+        });
+
+        it('game is started', function () {
+            expect(startedBefore).to.equal(false);
+            expect(startedAfter).to.equal(true);
         });
 
         it('emitted GAME_START game event', function () {
