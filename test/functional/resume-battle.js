@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 const EventEmitter = require('events');
-const risk = require('../../');
+const risk = require('../../lib');
 const state = require('../states/resume-battle');
 
 describe('load state saved in a battle', function () {
