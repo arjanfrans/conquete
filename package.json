@@ -13,6 +13,9 @@
     "ci": "npm run cover",
     "lint": "eslint lib"
   },
+  "files": [
+      "dist"
+  ],
   "author": "Arjan Frans <arjanfrans.com@gmail.com>",
   "license": "MIT",
   "repository": {
