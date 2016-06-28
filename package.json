@@ -1,6 +1,6 @@
 {
   "name": "conquete",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Logic for the risk board game",
   "main": "./dist/index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "lint": "eslint lib"
   },
   "files": [
-      "dist"
+    "dist"
   ],
   "author": "Arjan Frans <arjanfrans.com@gmail.com>",
   "license": "MIT",
