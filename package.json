@@ -27,8 +27,8 @@
     "debug": "^2.2.0",
     "jsonschema": "^1.1.0",
     "object-protect": "0.0.3",
-    "strict-emitter": "0.0.5",
-    "strict-errors": "^0.1.4"
+    "strict-emitter": "0.0.6",
+    "strict-errors": "^0.1.7"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
