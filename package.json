@@ -4,8 +4,12 @@
   "description": "Logic for the risk board game",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "babel --presets es2015,stage-0 -d dist/ lib/",
-    "prepublish": "npm run build",
+    "build": "npm run build:lib && npm run build:web",
+    "build:lib": "babel --presets es2015,stage-0 -d dist/ lib/",
+    "build:web": "node frontend/build.mjs",
+    "dev": "node frontend/build.mjs --serve",
+    "typecheck": "tsc --noEmit -p frontend",
+    "prepublishOnly": "npm run build:lib",
     "cli": "node ./cli/start.js",
     "test": "mocha ./test --recursive --check-leaks --colors",
     "test:watch": "npm test -- --watch",
@@ -35,9 +39,11 @@
     "babel-preset-stage-0": "^6.16.0",
     "chai": "^3.5.0",
     "coveralls": "^2.11.14",
+    "esbuild": "0.24.0",
     "eslint": "^3.7.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.2",
-    "sinon": "^1.17.6"
+    "sinon": "^1.17.6",
+    "typescript": "5.6.3"
   }
 }
